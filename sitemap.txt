@@ -1,8 +1,8 @@
 http://grayandcyan.github.io/messageboard/index.html
 http://grayandcyan.github.io/contact/index.html
 http://grayandcyan.github.io/2022/12/10/Spring%E9%9A%8F%E8%AE%B0/
-http://grayandcyan.github.io/2022/12/10/MyBatis%E9%9A%8F%E8%AE%B0/
 http://grayandcyan.github.io/2022/12/10/SpringMVC%E9%9A%8F%E8%AE%B0/
+http://grayandcyan.github.io/2022/12/10/MyBatis%E9%9A%8F%E8%AE%B0/
 http://grayandcyan.github.io/about/index.html
 http://grayandcyan.github.io/categories/index.html
 http://grayandcyan.github.io/tags/index.html
