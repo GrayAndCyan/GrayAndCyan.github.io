@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://grayandcyan.github.io/about/index.html</loc>
+    
+    <lastmod>2022-12-12</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://grayandcyan.github.io/messageboard/index.html</loc>
     
     <lastmod>2022-12-12</lastmod>
@@ -29,15 +38,6 @@
   </url>
   
   <url>
-    <loc>http://grayandcyan.github.io/2022/12/10/SpringMVC%E9%9A%8F%E8%AE%B0/</loc>
-    
-    <lastmod>2022-12-12</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://grayandcyan.github.io/2022/12/10/MyBatis%E9%9A%8F%E8%AE%B0/</loc>
     
     <lastmod>2022-12-12</lastmod>
@@ -47,7 +47,7 @@
   </url>
   
   <url>
-    <loc>http://grayandcyan.github.io/about/index.html</loc>
+    <loc>http://grayandcyan.github.io/2022/12/10/SpringMVC%E9%9A%8F%E8%AE%B0/</loc>
     
     <lastmod>2022-12-12</lastmod>
     
