@@ -4,16 +4,7 @@
   <url>
     <loc>http://grayandcyan.github.io/2022/12/15/QingNiao/</loc>
     
-    <lastmod>2022-12-14</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://grayandcyan.github.io/about/index.html</loc>
-    
-    <lastmod>2022-12-14</lastmod>
+    <lastmod>2023-01-03</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -22,7 +13,7 @@
   <url>
     <loc>http://grayandcyan.github.io/2022/12/10/Spring%E9%9A%8F%E8%AE%B0/</loc>
     
-    <lastmod>2022-12-14</lastmod>
+    <lastmod>2023-01-03</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -31,7 +22,7 @@
   <url>
     <loc>http://grayandcyan.github.io/2022/12/10/SpringMVC%E9%9A%8F%E8%AE%B0/</loc>
     
-    <lastmod>2022-12-14</lastmod>
+    <lastmod>2023-01-03</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -39,6 +30,15 @@
   
   <url>
     <loc>http://grayandcyan.github.io/2022/12/10/MyBatis%E9%9A%8F%E8%AE%B0/</loc>
+    
+    <lastmod>2023-01-03</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://grayandcyan.github.io/about/index.html</loc>
     
     <lastmod>2022-12-14</lastmod>
     
@@ -85,29 +85,29 @@
 
   <url>
     <loc>http://grayandcyan.github.io/</loc>
-    <lastmod>2022-12-24</lastmod>
+    <lastmod>2023-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
 
   
   <url>
+    <loc>http://grayandcyan.github.io/tags/JavaEE/</loc>
+    <lastmod>2023-01-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>http://grayandcyan.github.io/tags/%E3%80%8A%E9%9D%92%E9%B8%9F%E3%80%8B/</loc>
-    <lastmod>2022-12-24</lastmod>
+    <lastmod>2023-01-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://grayandcyan.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</loc>
-    <lastmod>2022-12-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://grayandcyan.github.io/tags/JavaEE/</loc>
-    <lastmod>2022-12-24</lastmod>
+    <lastmod>2023-01-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -115,22 +115,22 @@
 
   
   <url>
-    <loc>http://grayandcyan.github.io/categories/%E9%98%85%E8%AF%BB/</loc>
-    <lastmod>2022-12-24</lastmod>
+    <loc>http://grayandcyan.github.io/categories/%E5%AD%A6%E4%B9%A0/</loc>
+    <lastmod>2023-01-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://grayandcyan.github.io/categories/%E5%AD%A6%E4%B9%A0/</loc>
-    <lastmod>2022-12-24</lastmod>
+    <loc>http://grayandcyan.github.io/categories/%E9%98%85%E8%AF%BB/</loc>
+    <lastmod>2023-01-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://grayandcyan.github.io/categories/%E5%AD%A6%E4%B9%A0/Java/</loc>
-    <lastmod>2022-12-24</lastmod>
+    <lastmod>2023-01-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
