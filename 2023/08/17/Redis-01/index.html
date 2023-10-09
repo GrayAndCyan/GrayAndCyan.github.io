@@ -1,0 +1,324 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Redis-01 | 樱与抱月</title><meta name="author" content="mizore"><meta name="copyright" content="mizore"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Redis-01">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis-01">
+<meta property="og:url" content="http://example.com/2023/08/17/Redis-01/index.html">
+<meta property="og:site_name" content="樱与抱月">
+<meta property="og:description" content="Redis-01">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/profilePicture.jpg">
+<meta property="article:published_time" content="2023-08-17T06:56:44.000Z">
+<meta property="article:modified_time" content="2023-10-09T03:38:54.420Z">
+<meta property="article:author" content="mizore">
+<meta property="article:tag" content="Redis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/profilePicture.jpg"><link rel="shortcut icon" href="/img/profilePicture.jpg"><link rel="canonical" href="http://example.com/2023/08/17/Redis-01/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Redis-01',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-10-08 19:38:54'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (false) {
+    document.addEventListener('pjax:send', () => { preloader.initLoading() })
+    document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+  }
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/profilePicture.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">17</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">9</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2023/01/04/lbGZIwpXcrMNegt.png')"><nav id="nav"><span id="blog-info"><a href="/" title="樱与抱月"><span class="site-name">樱与抱月</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Redis-01</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-08-17T06:56:44.000Z" title="发表于 2023-08-16 22:56:44">2023-08-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-10-09T03:38:54.420Z" title="更新于 2023-10-08 19:38:54">2023-10-08</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AD%A6%E4%B9%A0/Redis/">Redis</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Redis-01"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="初步"><a href="#初步" class="headerlink" title="初步"></a>初步</h2><p>Redis解决session共享问题：多台<code>Tomcat</code>的<code>session</code>内存并不共享，<code>Nginx</code>将请求发送给<code>Tomcat</code>集群是通过轮询方式，会出现请求需要的<code>session</code>访问不到的现象。<code>Tomcat</code>对此给出了<code>session</code>复制的解决方案，但复制造成了内存浪费以及更严重的延迟问题，并不能说解决了问题。此时亟需一种支持数据共享的<code>key-value</code>结构内存存储方案加以解决——Redis。</p>
+<hr>
+
+<p>自行创建<code>StringRedisTemplate</code>时报错：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">testShare</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">StringRedisTemplate</span> <span class="variable">stringRedisTemplate</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringRedisTemplate</span>();</span><br><span class="line">    stringRedisTemplate1.opsForValue().set(<span class="string">&quot;k&quot;</span>,<span class="string">&quot;v&quot;</span>);</span><br><span class="line">    System.out.println(stringRedisTemplate.opsForValue().get(<span class="string">&quot;k&quot;</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述代码报错<code>java.lang.IllegalArgumentException: template not initialized; call afterPropertiesSet() before using it</code>，原因是未对自行创建的变量<code>stringRedisTemplate</code>初始化。使用ioc容器中的该类型bean自动装配即可免去自行初始化配置，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Resource</span></span><br><span class="line"><span class="keyword">private</span>  StringRedisTemplate stringRedisTemplate;</span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">testShare</span><span class="params">()</span> &#123;</span><br><span class="line">    stringRedisTemplate.opsForValue().set(<span class="string">&quot;k&quot;</span>,<span class="string">&quot;v&quot;</span>);</span><br><span class="line">    System.out.println(stringRedisTemplate.opsForValue().get(<span class="string">&quot;k&quot;</span>));</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 正常打印v</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="典型问题解决"><a href="#典型问题解决" class="headerlink" title="典型问题解决"></a>典型问题解决</h2><p>数据的一致性（数据库与redis缓存的同步）需求有高低之分，不易变更的数据有着低一致性需求，经常变更的数据一致性需求高。</p>
+<p>Redis每种数据结构都有多种内部编码实现。</p>
+<p><strong>纯内存存储、IO多路复用技术、单线程架构</strong>（避免了线程切换和竞态产生的消耗）是造就Redis高性能的三个因素。</p>
+<p><code>persist</code>命令可以删除任意类型键的过期时间，但是<code>set</code>指令也会删除字符串类型键的过期时间。</p>
+<p><code>scan</code>渐进式遍历，每次执行<code>scan</code>，可以想象成只扫描一个字典中的一部分键，直到将字典中的所有键遍历完毕。</p>
+<hr>
+<table>
+<thead>
+<tr>
+<th align="left">问题</th>
+<th align="left">描述</th>
+<th align="left">解决方案</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">缓存穿透</td>
+<td align="left">查询不存在的数据，缓存层和存储层都未命中。</td>
+<td align="left">1. 缓存空对象<br>2. 在客户端与缓存层间加布隆过滤器</td>
+</tr>
+<tr>
+<td align="left">缓存雪崩</td>
+<td align="left">缓存层大量key同时过期或Redis因某些原因停止服务，所有请求到达存储层，造成巨大压力。</td>
+<td align="left">1. 给不同key的过期时间追加随机值<br>2. 利用Redis集群提高服务的可用性<br>3. 为缓存业务添加降级限流策略<br>4. 给业务添加多级缓存</td>
+</tr>
+<tr>
+<td align="left">缓存击穿</td>
+<td align="left">热点key过期，且重建缓存耗时长，导致高并发量涌入存储层。</td>
+<td align="left">1. 互斥锁： 只有第一个请求去重建，缓存重建完成前其他请求进入等待。<br>2. 逻辑过期： 热点key“物理”不过期，设置逻辑过期时间（作为新字段），逻辑过期时请求继续使用旧数据，另开线程异步更新数据。</td>
+</tr>
+</tbody></table>
+<hr>
+<p>一种试图用脏数据去更新数据库数据的错误行为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">SeckillVoucher</span> <span class="variable">seckillVoucher</span> <span class="operator">=</span> seckillVoucherService.getById(voucherId);</span><br><span class="line"><span class="type">int</span> <span class="variable">stock</span> <span class="operator">=</span> seckillVoucher.getStock();</span><br><span class="line">seckillVoucher.setStock(stock - <span class="number">1</span>);</span><br><span class="line">seckillVoucherService.updateById(seckillVoucher);</span><br></pre></td></tr></table></figure>
+<p>这样的写发在并发情形容易出现问题，<code>stock</code>变量是脏数据，它在持有旧数据时，其他线程可能对数据库该字段的数据进行修改，这些修改都是该变量不得而知的，在并发场景下它不能被用来更新数据库数据。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (seckillVoucher.getStock() == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> Result.fail(<span class="string">&quot;库存不足&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样的代码问题在于判读条件，它与并发bug配合起来人让调试结果更加迷惑：在并发bug下，库存会出现负数，这样的判断条件将认为负数库存量仍是正确的请求！！<br>因此，将判断条件改为 <code>xxx &lt; 1</code>，即使<code>xxx</code>在逻辑上不会出现负数情况。</p>
+<p><code>@Transactional</code>注解与<code>synchronized</code>关键字同时使用时可能发生的陷阱：<br>什么叫同时使用？这里指两者作用的代码段有交集。<br>下面一段代码展示了并发场景下<code>@Transactional</code>使<code>synchronized</code>失效的情形：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="keyword">public</span> Result <span class="title function_">createVoucherOrder</span><span class="params">(Long voucherId)</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">synchronized</span> (lock) &#123;</span><br><span class="line">        <span class="comment">// lock变量需要对并发的线程具有可见性，即多线程共享的资源</span></span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">        <span class="comment">// 省略了一些查询和修改数据库信息的操作</span></span><br><span class="line">    </span><br><span class="line">        <span class="keyword">return</span> Result.ok(orderId);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> Result <span class="title function_">seckillVoucher</span><span class="params">(Long voucherId)</span> &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="keyword">return</span> createVoucherOrder(voucherId);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上述代码在每个线程执行时，会先释放锁，然后提交事务（真正执行数据库操作）。这个先后顺序导致并发问题出现：在锁被释放后且事务提交前，其他线程进入同步代码块，此时其他线程仍对旧数据库数据进程交互，使<code>synchronized</code>失效。</p>
+<p>解决：保证提交事务后再释放锁。由于<code>@Transactional</code>已经加在<code>createVoucherOrder</code>方法上了，那么在方法被调用的地方上同步锁，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="keyword">public</span> Result <span class="title function_">createVoucherOrder</span><span class="params">(Long voucherId)</span> &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="comment">// 省略了一些查询和修改数据库信息的操作</span></span><br><span class="line">    <span class="keyword">return</span> Result.ok(orderId);  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> Result <span class="title function_">seckillVoucher</span><span class="params">(Long voucherId)</span> &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="keyword">synchronized</span> (lock) &#123;</span><br><span class="line">        <span class="keyword">return</span> createVoucherOrder(voucherId);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样可以真正使多个线程在「与数据库的交互操作」上实现同步。线程同步是指一定时间内只允许一个线程访问某资源，在这里是使多个线程串行执行同步块中的代码。<br>一言以蔽之，<code>@Transactional</code>注解与<code>synchronized</code>关键字同时使用时，我们需要做到多个线程实现串行的事务提交。<br>问题的解决引发新的问题，在上述代码中，<code>@Transactional</code>失效——SpringAOP的自调用问题。<br>Spring会为有事务方法的类提供代理类，在该类外部调用这个类的事务方法时，调用者是代理类对象。<br><code>@Transactional</code>加在了<code>createVoucherOrder()</code>方法上，在类外调用<code>seckillVoucher()</code>方法时，由于它是非事务方法，所以由原对象调用，<code>return createVoucherOrder(voucherId);</code>语句调用的方法也只能是无事务功能的原方法，实际是<code>return this.createVoucherOrder(voucherId);</code>。<br>一种解决方法时显式地使用当前类的代理类对象调用事务方法，将这个过程显式地编码在类内调用事务方法的非事务方法中（说得有点绕了，在这里就是<code>seckillVoucher()</code>方法）。<br>改变<code>seckillVoucher()</code>方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Result <span class="title function_">seckillVoucher</span><span class="params">(Long voucherId)</span> &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="keyword">synchronized</span> (lock) &#123;</span><br><span class="line">        <span class="type">IVoucherOrderService</span> <span class="variable">proxy</span> <span class="operator">=</span> (IVoucherOrderService) AopContext.currentProxy();</span><br><span class="line">        <span class="keyword">return</span> proxy.createVoucherOrder(voucherId);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>需要添加依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.aspectj<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>aspectjweaver<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>另外，需要在启动类添加<code>@EnableAspectJAutoProxy(exposeProxy = true)</code>注解，去暴露这个的代理类对象（<code>exposeProxy</code>属性默认是<code>false</code>）。</p>
+<hr>
+<h2 id="Reids实现的锁"><a href="#Reids实现的锁" class="headerlink" title="Reids实现的锁"></a>Reids实现的锁</h2><p>在设计Redis分布式锁时，根据锁的应用范围，设计锁在Redis实现中的<code>key</code>值，即理清要求串行执行是哪类线程。假如在限制「每人一单」的场景，<code>key</code>应该随用户<code>id</code>而变。</p>
+<p>在极端情况下，Redis分布式锁会发生误删除锁的情况：线程1占有锁<code>(Lock:Thread1)</code>，在完成任务时阻塞，锁过期被释放，这时线程2占有锁<code>（Lock:Thread2）</code>，随之线程1完成任务释放了线程2占有的锁<code>(Lock:Thread2)</code>。<br>解决：</p>
+<ol>
+<li>锁的值存储线程标识。这个标识不能单纯是线程id，因为这样仍然保证不了唯一性——不同JVM进程下，各自线程id的分配是私有的。集群下会出现不同JVM的线程之间id相等的情况。因此使用<code>UUID</code>作为前缀，创建<code>UUID</code>变量作为分布式锁这个类的类属性。这样，不同JVM有着不同的<code>UUID</code>，同一JVM可以靠线程id进行锁的区分。</li>
+<li>在释放锁时，判断是否是当前线程所占有的锁，结果一致则释放，反之不释放。判断与释放是先后的两个动作，这之间如果线程阻塞，锁过期并有其他JVM下的线程获取锁，那么在前线程结束阻塞执行释放时，仍然错误地释放了其他线程的锁。因此，需要确保“判断-释放”这个过程的原子性——使用lua脚本解决。lua脚本可以实现将代码逻辑与redis命令调用写在一起，实现原子性。</li>
+</ol>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 获取线程标识和锁value,比对,一致则释放即删除锁</span></span><br><span class="line"><span class="comment">-- KEY[1]是锁的key,ARGV[1]是线程标识</span></span><br><span class="line"><span class="keyword">if</span> (ARGV[<span class="number">1</span>] == redis.call(<span class="string">&quot;get&quot;</span>, KEY[<span class="number">1</span>])) <span class="keyword">then</span></span><br><span class="line">    redis.call(<span class="string">&quot;del&quot;</span>, KEY[<span class="number">1</span>]);</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+
+<p>此时Redis分布式锁代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SimpleRedisLock</span> <span class="keyword">implements</span> <span class="title class_">ILock</span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String lockName;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span>  StringRedisTemplate stringRedisTemplate;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">SimpleRedisLock</span><span class="params">(String lockName, StringRedisTemplate stringRedisTemplate)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.lockName = lockName;</span><br><span class="line">        <span class="built_in">this</span>.stringRedisTemplate = stringRedisTemplate;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">LOCK_PREFIX</span> <span class="operator">=</span> <span class="string">&quot;Lock&quot;</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">ID_PREFIX</span> <span class="operator">=</span> UUID.randomUUID().toString(<span class="literal">true</span>) + <span class="string">&quot;-&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">tryLock</span><span class="params">(<span class="type">long</span> ttl)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">lockValue</span> <span class="operator">=</span> ID_PREFIX + Thread.currentThread().getId();</span><br><span class="line">        <span class="type">Boolean</span> <span class="variable">res</span> <span class="operator">=</span> stringRedisTemplate.opsForValue()</span><br><span class="line">                .setIfAbsent(LOCK_PREFIX + lockName, lockValue, ttl, TimeUnit.SECONDS);</span><br><span class="line">        <span class="keyword">return</span> Boolean.TRUE.equals(res);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 提前在类加载阶段就加载好脚本</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> DefaultRedisScript&lt;Long&gt; UNLOCK_SCRIPT;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        UNLOCK_SCRIPT = <span class="keyword">new</span> <span class="title class_">DefaultRedisScript</span>&lt;&gt;();</span><br><span class="line">        UNLOCK_SCRIPT.setLocation(<span class="keyword">new</span> <span class="title class_">ClassPathResource</span>(<span class="string">&quot;unlock.lua&quot;</span>));</span><br><span class="line">        <span class="comment">// java泛型擦除导致的需要另传泛型类型信息  这里是设置脚本返回值类型</span></span><br><span class="line">        UNLOCK_SCRIPT.setResultType(Long.class);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">relaseLock</span><span class="params">()</span> &#123;</span><br><span class="line">        List&lt;String&gt; keys = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">        keys.add(LOCK_PREFIX + lockName);</span><br><span class="line">        <span class="type">String</span> <span class="variable">threadId</span> <span class="operator">=</span> ID_PREFIX + Thread.currentThread().getId();</span><br><span class="line">        <span class="comment">// 调用lua脚本</span></span><br><span class="line">        stringRedisTemplate.execute(UNLOCK_SCRIPT, keys, threadId);</span><br><span class="line">        <span class="comment">// 第二个参数只传一个key时，也可以直接用Collections.singletonList(LOCK_PREFIX + lockName);这样得到单元素集合</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>使用Java配置RedissonClient：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RedissonConfig</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> RedissonClient <span class="title function_">redissonClient</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">Config</span> <span class="variable">config</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Config</span>();</span><br><span class="line">        config.useSingleServer().setAddress(<span class="string">&quot;redis://127.0.0.1:6379&quot;</span>).setPassword(<span class="string">&quot;xxx&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> Redisson.create(config);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用<code>Redisson</code>工厂类，根据不同<code>config</code>配置来生成<code>RedissonClient</code>实例，注册成为ioc中的bean。</p>
+<p><strong>Redisson锁的看门狗机制：</strong>一个线程获取锁，开始执行业务代码，只要线程还在执行业务代码，那么锁的过期时间每过10s就重置为30s（这是一个可以递归调用的定时任务）。只要业务代码执行尚未执行完，锁就不会过期。解决了业务代码阻塞，锁自行过期，导致其他线程也进入同一业务代码的问题。在主动释放锁时，会取消这个定时更新的任务。</p>
+<p><strong>Redisson分布式锁的特点：</strong></p>
+<ul>
+<li>可重入：利用hash结构记录线程id和重入次数</li>
+<li>可重试：利用信号量和Redis发布订阅功能实现等待、环形，获取锁失败的重试机制，避免了直接忙等待。</li>
+<li>超时续约：利用<code>watchdog</code>,每隔一段时间<code>（releaseTime / 3）</code>，重置超时时间。</li>
+<li>避免锁的主从一致性问题：<code>multiLock</code>。为避免锁的主从一致性问题，在获取锁时，Redisson将锁信息保存在所有Redis节点中。在所有节点都获取到锁，<code>tryLock()</code>才算成功。（此前一般是只在主节点进行写操作的）。<del>这点感觉不算是很好的解决方案。</del> 但Redisson源码写得好严谨！！</li>
+</ul>
+<hr>
+<h2 id="Redis实现的消息队列"><a href="#Redis实现的消息队列" class="headerlink" title="Redis实现的消息队列"></a>Redis实现的消息队列</h2><p>使用jdk的阻塞队列存储待持久化的订单信息，有如下缺点：</p>
+<ol>
+<li>JVM有着内存上限的限制</li>
+<li>JVM的内存没有持久化机制，服务重启或宕机会使JVM内存中的订单信息丢失，无法找回。以及队首被取出后处理的过程中出现异常，导致该队首信息丢失。</li>
+</ol>
+<hr>
+<p><strong>Redis消息队列：</strong><br>Redis Stream(XGROUP)消息队列是一种比较完善的消息队列。生产者使用<code>XADD</code>命令向指定stream中添加消息；消费方创建消费者组<code>XGROUP CREATE</code>，使用消费者组读取消息<code>XREADGROUP</code>，确认消息<code>XACK</code>。对于每个消费者组，服务维护一个<code>pending list</code>，存放该消费者组读取但尚未确认的消息。因此使用<code>XREADGROUP</code>命令时，可以指定消息的读取来源是<code>stream</code> (<code>&gt;</code>)，还是<code>pending list</code> (<code>0</code>)。<br>命令比较多，参数繁杂，需要善用redis <code>help</code>命令和redis官方文档。<br>综上，这种消息队列实现方案的优势有：</p>
+<ul>
+<li>消息可回溯。同一条消息不能被同组的消费者都读取，同组的消费者属于竞争关系；但可以被不同组再次读取。</li>
+<li>可以多消费者竞争消息，加快消费速度。</li>
+<li>可以阻塞读取。在命令中设置<code>BLOCK</code>参数。</li>
+<li>没有消息漏读的风险。每次消息读取可以指定读<code>stream</code>中首个待读取的消息。</li>
+<li>有消息确认机制，保证消息至少被消费一次。因为每个消费者组对应一个<code>pending list</code>存放该组读取过的待确认消息。<br>使用这种实现方案，生产端在lua脚本将信息存入stream即可，在消费端需要有相对复杂的业务代码，涉及读取<code>stream</code>和读取<code>pending list</code>，这部分代码如下：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">class</span> <span class="title class_">OrderHandle</span> <span class="keyword">implements</span> <span class="title class_">Runnable</span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">                <span class="type">String</span> <span class="variable">streamKey</span> <span class="operator">=</span> <span class="string">&quot;stream.orders&quot;</span>;</span><br><span class="line">                <span class="comment">// 从stream.orders读一条消息 XADDGROUP g1 c1 COUNT 1 BLOCK 2000 STREAMS stream.orders &gt;</span></span><br><span class="line">                List&lt;MapRecord&lt;String, Object, Object&gt;&gt; list = stringRedisTemplate.opsForStream().read(</span><br><span class="line">                        Consumer.from(<span class="string">&quot;g1&quot;</span>, <span class="string">&quot;c1&quot;</span>),</span><br><span class="line">                        StreamReadOptions.empty().count(<span class="number">1</span>).block(Duration.ofSeconds(<span class="number">2</span>)),</span><br><span class="line">                        StreamOffset.create(streamKey, ReadOffset.lastConsumed())</span><br><span class="line">                );</span><br><span class="line">                <span class="comment">// 阻塞2s可以避免频繁</span></span><br><span class="line">                <span class="keyword">if</span> (list == <span class="literal">null</span> || list.isEmpty()) &#123;</span><br><span class="line">                    <span class="comment">// 暂时没有在stream读取到消息</span></span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 读取到了一条消息</span></span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    MapRecord&lt;String, Object, Object&gt; mapRecord = list.get(<span class="number">0</span>);</span><br><span class="line">                    Map&lt;Object, Object&gt; value = mapRecord.getValue();</span><br><span class="line">                    <span class="type">VoucherOrder</span> <span class="variable">order</span> <span class="operator">=</span> BeanUtil.fillBeanWithMap(value, <span class="keyword">new</span> <span class="title class_">VoucherOrder</span>(), <span class="literal">true</span>);</span><br><span class="line">                    createVoucherOrder2(order);</span><br><span class="line">                    <span class="comment">// ack</span></span><br><span class="line">                    stringRedisTemplate.opsForStream().acknowledge(streamKey, <span class="string">&quot;g1&quot;</span>, mapRecord.getId());</span><br><span class="line">                &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                    <span class="comment">// 出现异常，去pending list读</span></span><br><span class="line">                    log.error(<span class="string">&quot;处理在stream.orders读到的消息时异常&quot;</span>,e);</span><br><span class="line">                    readPendingList();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">readPendingList</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">streamKey</span> <span class="operator">=</span> <span class="string">&quot;stream.orders&quot;</span>;</span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">            <span class="comment">// 从pending list读一条消息 XADDGROUP g1 c1 COUNT 1 STREAMS stream.orders 0</span></span><br><span class="line">            List&lt;MapRecord&lt;String, Object, Object&gt;&gt; list = stringRedisTemplate.opsForStream().read(</span><br><span class="line">                    Consumer.from(<span class="string">&quot;g1&quot;</span>, <span class="string">&quot;c1&quot;</span>),</span><br><span class="line">                    StreamReadOptions.empty().count(<span class="number">1</span>),</span><br><span class="line">                    StreamOffset.create(streamKey, ReadOffset.from(<span class="string">&quot;0&quot;</span>))</span><br><span class="line">            );</span><br><span class="line">            <span class="keyword">if</span> (list == <span class="literal">null</span> || list.isEmpty()) &#123;</span><br><span class="line">                <span class="comment">// 没有在pending-list读取到消息</span></span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 读取到了一条消息</span></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                MapRecord&lt;String, Object, Object&gt; mapRecord = list.get(<span class="number">0</span>);</span><br><span class="line">                Map&lt;Object, Object&gt; value = mapRecord.getValue();</span><br><span class="line">                <span class="type">VoucherOrder</span> <span class="variable">order</span> <span class="operator">=</span> BeanUtil.fillBeanWithMap(value, <span class="keyword">new</span> <span class="title class_">VoucherOrder</span>(), <span class="literal">true</span>);</span><br><span class="line">                createVoucherOrder2(order);</span><br><span class="line">                <span class="comment">// ack确认</span></span><br><span class="line">                stringRedisTemplate.opsForStream().acknowledge(streamKey, <span class="string">&quot;g1&quot;</span>, mapRecord.getId());</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                log.error(<span class="string">&quot;处理在pending list读到的消息时异常&quot;</span>,e);</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    Thread.sleep(<span class="number">20</span>);</span><br><span class="line">                    <span class="comment">// 在read命令去掉了阻塞2000ms，在此添加异常重读时的时间间隔，避免频繁</span></span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException ex) &#123;</span><br><span class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(ex);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="Redis实现的一些业务"><a href="#Redis实现的一些业务" class="headerlink" title="Redis实现的一些业务"></a>Redis实现的一些业务</h2><p>关于「点赞与取消点赞」业务：（假设这里点赞的内容是某篇笔记）<br>点击点赞按钮时，前端可以根据按钮的亮暗状态（亮为已赞，暗为尚未点赞）切换状态即可。但只是这样做并不够，因为在显示笔记时就需要正确显示「是否已点赞」，尽管用户没有主动操作按钮。因此但涉及笔记查询业务的地方，都需要前端正确判断该篇笔记「是否已点赞」，这就必须有后端提供的信息，根据信息判断。一种做法是为笔记添加<code>Boolean isLiked</code>字段，表示当前登陆的用户是否赞过这篇笔记。<strong>在需要显示笔记的情形下，后端查询笔记实体，包装好必要的信息返回给前端，包括了笔记的<code>isLiked</code>字段，前端根据该字段显示已点赞情况。</strong></p>
+<p><strong>feed流</strong>中的推拉结合：<br>“拉模式”存在可能较大的读取延迟，“推模式”存在可能较大的内存占用。<br>普通用户粉丝少，使用「推模式」，分布动态时将动态推送到每个粉丝的收件箱，这样避免高读取延迟并使用了较少内存。<br>大V粉丝多，但包括活跃粉和普通粉：活跃粉占比少，使用「推模式」推送消息；普通粉僵尸粉占大多数，使用「拉模式」，在粉丝用户读取收件箱时从关注的大V的发件箱中拉取动态。</p>
+<p>滚动分页查询使用redis的<code>zset</code>实现而不是<code>list</code>,根据<code>score</code>值来分页查，避免使用<code>list</code>造成的新添加数据时索引变化引起的某条数据重复查询。<br>滚动分页查询参数：</p>
+<blockquote>
+<p>max：第一次查询：当前时间戳；后续查询：上一次查询结果中的最小时间戳。<br>min：固定为0。<br>offset：第一次查询：0；后续查询：已查询到的所有结果中<code>score</code>值为最小时间戳的元素个数。<br>count：固定值，为每页数据条数。</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; ZRANGE zset1 0 10 WITHSCORES</span><br><span class="line"> 1) <span class="string">&quot;m1&quot;</span></span><br><span class="line"> 2) <span class="string">&quot;1&quot;</span></span><br><span class="line"> 3) <span class="string">&quot;m2&quot;</span></span><br><span class="line"> 4) <span class="string">&quot;2&quot;</span></span><br><span class="line"> 5) <span class="string">&quot;m3&quot;</span></span><br><span class="line"> 6) <span class="string">&quot;5&quot;</span></span><br><span class="line"> 7) <span class="string">&quot;m4&quot;</span></span><br><span class="line"> 8) <span class="string">&quot;5&quot;</span></span><br><span class="line"> 9) <span class="string">&quot;m5&quot;</span></span><br><span class="line">10) <span class="string">&quot;5&quot;</span></span><br><span class="line">11) <span class="string">&quot;m6&quot;</span></span><br><span class="line">12) <span class="string">&quot;6&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; ZREVRANGEBYSCORE zset1 1000 0 WITHSCORES LIMIT 0 3 </span><br><span class="line">1) <span class="string">&quot;m6&quot;</span></span><br><span class="line">2) <span class="string">&quot;6&quot;</span></span><br><span class="line">3) <span class="string">&quot;m5&quot;</span></span><br><span class="line">4) <span class="string">&quot;5&quot;</span></span><br><span class="line">5) <span class="string">&quot;m4&quot;</span></span><br><span class="line">6) <span class="string">&quot;5&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; ZADD zset1 7 m7</span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; ZREVRANGEBYSCORE zset1 5 0 WITHSCORES LIMIT 2 3</span><br><span class="line">1) <span class="string">&quot;m3&quot;</span></span><br><span class="line">2) <span class="string">&quot;5&quot;</span></span><br><span class="line">3) <span class="string">&quot;m2&quot;</span></span><br><span class="line">4) <span class="string">&quot;2&quot;</span></span><br><span class="line">5) <span class="string">&quot;m1&quot;</span></span><br><span class="line">6) <span class="string">&quot;1&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="Redis使用注意事项-内存方面"><a href="#Redis使用注意事项-内存方面" class="headerlink" title="Redis使用注意事项 - 内存方面"></a>Redis使用注意事项 - 内存方面</h2><p>redis key 限制在44字节大小，因为key是string类型，redis底层编码包含int, embstr, raw三种，在44字节内使用embstr，采用连续内存空间；超过44后使用raw编码方式，具有内存消耗较大和访问性能下降的弊端。</p>
+<p>hash结构的entry数量不要超过has-ziplist-max-entries，这个值可以通过<code>config get hash-max-ziplist-entries</code>命令查看，也可以通过<code>config set</code>设置。超过这个值，底层存储方式将不再使用更节省内存的<code>ziplist</code>。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">mizore</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2023/08/17/Redis-01/">http://example.com/2023/08/17/Redis-01/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">樱与抱月</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Redis/">Redis</a></div><div class="post_share"><div class="social-share" data-image="/img/profilePicture.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/10/10/rabbitmq/" title="RabbitMQ"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">RabbitMQ</div></div></a></div><div class="next-post pull-right"><a href="/2023/07/11/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C01/" title="计算机网络 Part1"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">计算机网络 Part1</div></div></a></div></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="waline-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/profilePicture.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">mizore</div><div class="author-info__description">Welcome to my blog!!</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">17</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">9</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/GrayAndCyan" target="_blank" title=""><i class="fab fa-github"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9D%E6%AD%A5"><span class="toc-number">1.</span> <span class="toc-text">初步</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B8%E5%9E%8B%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3"><span class="toc-number">2.</span> <span class="toc-text">典型问题解决</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reids%E5%AE%9E%E7%8E%B0%E7%9A%84%E9%94%81"><span class="toc-number">3.</span> <span class="toc-text">Reids实现的锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis%E5%AE%9E%E7%8E%B0%E7%9A%84%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97"><span class="toc-number">4.</span> <span class="toc-text">Redis实现的消息队列</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis%E5%AE%9E%E7%8E%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E4%B8%9A%E5%8A%A1"><span class="toc-number">5.</span> <span class="toc-text">Redis实现的一些业务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9-%E5%86%85%E5%AD%98%E6%96%B9%E9%9D%A2"><span class="toc-number">6.</span> <span class="toc-text">Redis使用注意事项 - 内存方面</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/10/Java%E5%90%8E%E7%AB%AF%E9%9D%A2%E7%BB%8F-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%E4%B8%AD/" title="Java后端面经-持续更新中">Java后端面经-持续更新中</a><time datetime="2023-10-09T19:49:45.000Z" title="发表于 2023-10-09 11:49:45">2023-10-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/10/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" title="微服务">微服务</a><time datetime="2023-10-09T19:45:22.000Z" title="发表于 2023-10-09 11:45:22">2023-10-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/10/rabbitmq/" title="RabbitMQ">RabbitMQ</a><time datetime="2023-10-09T19:40:46.000Z" title="发表于 2023-10-09 11:40:46">2023-10-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/08/17/Redis-01/" title="Redis-01">Redis-01</a><time datetime="2023-08-17T06:56:44.000Z" title="发表于 2023-08-16 22:56:44">2023-08-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/07/11/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C01/" title="计算机网络 Part1">计算机网络 Part1</a><time datetime="2023-07-11T08:37:25.000Z" title="发表于 2023-07-11 00:37:25">2023-07-11</time></div></div></div></div></div></div></main><footer id="footer" style="background: rgba(255,255,255,.0)"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By mizore</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><div class="js-pjax"><script>function loadWaline () {
+  function initWaline () {
+    const waline = Waline.init(Object.assign({
+      el: '#waline-wrap',
+      serverURL: 'https://fragileu-blog.vercel.app/',
+      pageview: false,
+      dark: 'html[data-theme="dark"]',
+      path: window.location.pathname,
+      comment: false,
+    }, null))
+  }
+
+  if (typeof Waline === 'object') initWaline()
+  else {
+    getCSS('https://cdn.jsdelivr.net/npm/@waline/client/dist/waline.min.css').then(() => {
+      getScript('https://cdn.jsdelivr.net/npm/@waline/client/dist/waline.min.js').then(initWaline)
+    })
+  }
+}
+
+if ('Waline' === 'Waline' || !true) {
+  if (true) btf.loadComment(document.getElementById('waline-wrap'),loadWaline)
+  else setTimeout(loadWaline, 0)
+} else {
+  function loadOtherComment () {
+    loadWaline()
+  }
+}</script></div><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="true" data-text="Honoka,You,Ayumu,Sumire,Megumi" data-fontsize="15px" data-random="true" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

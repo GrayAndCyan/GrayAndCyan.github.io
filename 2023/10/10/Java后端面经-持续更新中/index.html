@@ -1,0 +1,300 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Java后端面经-持续更新中 | 樱与抱月</title><meta name="author" content="mizore"><meta name="copyright" content="mizore"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="一些网络搜集的题目与个人总结的回答，持续更新中。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java后端面经-持续更新中">
+<meta property="og:url" content="http://example.com/2023/10/10/Java%E5%90%8E%E7%AB%AF%E9%9D%A2%E7%BB%8F-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%E4%B8%AD/index.html">
+<meta property="og:site_name" content="樱与抱月">
+<meta property="og:description" content="一些网络搜集的题目与个人总结的回答，持续更新中。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/profilePicture.jpg">
+<meta property="article:published_time" content="2023-10-09T19:49:45.000Z">
+<meta property="article:modified_time" content="2023-10-09T03:53:35.296Z">
+<meta property="article:author" content="mizore">
+<meta property="article:tag" content="mizore-study blog">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/profilePicture.jpg"><link rel="shortcut icon" href="/img/profilePicture.jpg"><link rel="canonical" href="http://example.com/2023/10/10/Java%E5%90%8E%E7%AB%AF%E9%9D%A2%E7%BB%8F-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%E4%B8%AD/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Java后端面经-持续更新中',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-10-08 19:53:35'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (false) {
+    document.addEventListener('pjax:send', () => { preloader.initLoading() })
+    document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+  }
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/profilePicture.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">17</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">9</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2023/01/04/lbGZIwpXcrMNegt.png')"><nav id="nav"><span id="blog-info"><a href="/" title="樱与抱月"><span class="site-name">樱与抱月</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Java后端面经-持续更新中</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-10-09T19:49:45.000Z" title="发表于 2023-10-09 11:49:45">2023-10-09</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-10-09T03:53:35.296Z" title="更新于 2023-10-08 19:53:35">2023-10-08</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Java后端面经-持续更新中"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
+<p>一些网络搜集的题目与个人总结的回答，持续更新中。</p>
+</blockquote>
+<h2 id="JavaSE"><a href="#JavaSE" class="headerlink" title="JavaSE"></a>JavaSE</h2><ol>
+<li><p>为什么<code>String</code>类要做成<code>final</code>的？</p>
+<p> <code>final</code> 使 <code>String</code> 类不可被继承，从而避免了子类对<code>String</code>类「不可变」这一特性的修改，避免了因此导致的线程安全问题。<br> <code>String</code>在Java中发挥举足轻重的作用，不仅经常作为数据的键值，还广泛用于表示一些敏感信息，如密码、密钥，所以保证这个类的安全性这点毋庸置疑，尽管为此牺牲了可继承的这种灵活性。<br> 那么具体地，为什么加<code>final</code>可以保证安全性？<code>String</code>类是不可变的，尽管一些方法看似改变了字符串，但实际是拿到了新创建的字符串，原字符串对象没有改变。当多个线程对共享资源读写操作时，由于读写操作非原子性以及CPU不断进行着线程切换，容易造成线程交错执行导致线程安全问题，刚才提到的字符串不可变特性正避免了这个情况的发生，由于不可变，所以线程可以读它，但有不了写操作，因此<code>String</code>是线程安全的。了吗？不完全，如果它可以被继承，那么子类就可以修改它的方法，破坏原本特性，最直接的做法，比如子类方法中创建新线程去操作了原有资源包括局部变量和成员变量。添加<code>final</code>修饰符杜绝了这一可能性。对修改关闭，这也符合开闭原则。</p>
+<p> 总之<code>String</code>需要保证线程安全，它本身的不可变性为之增添了一层保障，而<code>final</code>是<strong>维护其不可变性，巩固线程安全性</strong>的又一层保障。尽管它让开发者无法继承<code>String</code>类来编写自己的字符串类，但这一取舍是值得的。我是这样理解Java设计者的这种设计的。</p>
+<p> <strong>（回答思路：线程安全的必要性 -&gt; 自身不可变性使线程安全 -&gt; 加final不可被继承使本身特性不被破坏）</strong></p>
+</li>
+</ol>
+<h2 id="SSM-SpringBoot"><a href="#SSM-SpringBoot" class="headerlink" title="SSM + SpringBoot"></a>SSM + SpringBoot</h2><ol>
+<li><p>如何理解<code>IoC</code></p>
+<p> <strong>首先，<code>IoC</code>本质是一个轻量级容器</strong>，使用<code>ConcurrentHashMap</code>存放各业务对象，这些对象我们称之为<code>Bean</code>。<code>IoC</code> 管理这些bean的生命周期，比如读取bean定义并注册，进行实例化以及完成依赖注入。<br> 《Spring揭秘》所说，***<code>IoC</code>是一种解耦各业务对象之间依赖关系的对象绑定方式。***<br> 关于<strong>解耦依赖关系</strong>：试想没有<code>IoC</code>的场景，对象A使用new的方式直接依赖对象B，是紧耦合。<code>IoC</code>的解耦作用体现在有了<code>IoC</code>后，对象A只需要去<code>IoC</code>容器中拿到B对象，就可以去使用它，也就是<code>IoC</code>帮我们完成的依赖注入，在需要更改A依赖的对象时，不需要改动A类的代码，免去重新编译A类源码，只需要更改配置文件或配置类即可，达到解耦效果。<br> 而<strong>对象绑定</strong>，正是在前面所说的，<code>IoC</code>帮我们完成依赖注入。根据依赖属性的类型分两种情形：对于依赖属性是普通对象，ioc使用反射技术，在对象实例化后注入属性；对于依赖同样是bean的情况，spring在读取bean定义时，使用<code>BeanReference</code>类型进行包装、标识，ioc根据<code>BeanReference</code>拿到依赖的<code>beanName</code>，去在容器中获取这个bean对象实例，给当前bean装配上；如果容器中没有我们需要的这个bean的实例，会先去完成这个新bean的实例化与初始化。</p>
+</li>
+<li><p>如何理解AOP</p>
+</li>
+<li><p>说说Bean的生命周期</p>
+</li>
+<li><p>说说Spring中的依赖循环</p>
+</li>
+</ol>
+<h2 id="JUC"><a href="#JUC" class="headerlink" title="JUC"></a>JUC</h2><ol>
+<li><p>创建线程的几种方式：</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43824267/article/details/112706385">https://blog.csdn.net/weixin_43824267/article/details/112706385</a></p>
+<p>捏嘛的，上来就用别人的，，这么懒？！</p>
+<p>这里做一些补充，重写<code>Thread</code>的<code>run()</code>方法的方式创建线程，将任务与线程合并在了一起；而写<code>Callable</code>和<code>Runnable</code>对象并传惨给<code>Thread()</code>的线程创建方式将任务与线程分离，更加灵活。</p>
+</li>
+<li><p>说说 <code>synchronized</code> 锁升级的原理</p>
+</li>
+</ol>
+<p><code>synchronized</code>锁升级在jdk15前后有一个较大的改变， 我先说下在jdk15之前的做法，主要就是对偏向锁的应用。jdk15之前对象还是默认可偏向的。在执行到<code>synchronized</code>语句时，如果这个对象此前没有被加锁，也就是当前线程获得加锁范围代码的执行权，这时候对象的的<code>markword</code>就会存储一个这个线程地址的信息，表示这个对象现在偏向这个线程。当再有线程想要获取锁时可以快速判断有没有发生竞争。如果再来的线程是新一个线程，根据是否发生竞争选择锁升级为轻量级锁还是重量级锁。</p>
+<p>当不发生竞争时选择升级轻量级锁，对象头<code>markword</code>后两位改为00表示加了轻锁。在线程栈中创建一个锁记录<code>lock record</code>，锁记录存储一份加锁对象原本的<code>markword</code>信息和对象引用，然后使用原子操作cas将加锁对象<code>markword</code>剩下的位置存上这个锁记录地址。加锁期间再有线程来向对象获取锁，能根据对象头存的锁记录地址判断是加锁线程锁重入情况，还是来了新线程的竞争情况。当发生锁重入时会在线程栈新创建<code>lock record</code>存加锁对象引用，但不再存储加锁对象原<code>markword</code>信息，而且改为存空指针实际上是零值。</p>
+<p>当发生竞争时锁升级为重量级锁。重量级锁的做法是在操作系统层面的<code>monitor</code>对象，通过对象存的<code>lock record</code>地址拿到对象原<code>markword</code>信息存到<code>monitor</code>。<code>monitor</code>有三个主要字段，<code>owner</code>存当前线程地址，表示重锁主人是这个线程；<code>entryList</code>存放阻塞在锁等待争抢锁的线程们，<code>waitSet</code>存调了<code>wait() join()</code>处在等待状态的线程。加锁对象<code>markword</code>后两位改为10表示重锁，前面的位置通过cas改为<code>monitor</code>地址。现在重锁加锁完成，<code>owner</code>线程执行临界区代码，执行结束后在<code>entrylist</code>竞争出新的主人线程，没有新主人的话进行<code>monitor</code>撤销和对象头恢复的工作。</p>
+<p>jdk15之后不推荐偏向锁并宣布即将废除它，默认关闭，我在jdk21源码中已经看不到偏向锁代码。那加锁流程和上面所说的相比去除了偏向锁的部分，从轻量锁开始，后面部分一致我就不重复建设了。废除偏向锁的原因有两点，一是对于现在的java程序，它对性能不再有明显提升甚至成为拖累者，二是它对jvm其他组件有代码侵入，代码难以维护。</p>
+<h2 id="计网"><a href="#计网" class="headerlink" title="计网"></a>计网</h2><ol>
+<li>输入url后发生什么（到显示页面流程）</li>
+</ol>
+<p>（字节后端一面）</p>
+<ol>
+<li>TCP，UDP的原理和区别</li>
+<li>TCP用了什么方法保证安全稳定</li>
+<li>TCP拥塞控制是什么？具体原理？常见算法？为什么用了拥塞控制后网络还是会拥挤？  （美团后端，字节后端</li>
+</ol>
+<p>（哔哩入日常实习）</p>
+<ol>
+<li>HTTP&#x2F;HTTPS区别  </li>
+<li>HTTP&#x2F;HTTPS端口</li>
+<li>非对称加密过程怎么设计</li>
+<li>私钥是否需要传递给客户端</li>
+</ol>
+<p>（淘天java二面）</p>
+<ol>
+<li>HTTP&#x2F;HTTPS区别   </li>
+<li>SSL&#x2F;TLS对于OSI哪一层 </li>
+<li>混合加密+证书安全链接流程   </li>
+<li>什么是滑动窗口</li>
+<li>TCP发送报文的过程</li>
+<li>限流算法都了解哪些</li>
+</ol>
+<h2 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h2><p>（字节后端一面）</p>
+<ol>
+<li><p>线程进程区别</p>
+<p> 线程和进程是不同层次的、非并列关系的两个概念，所以回答线程与进程的区别，先要明晰两者的概念。一个进程就是一个正在执行程序的实例（比起程序，它更是一个活动，有执行主体、程序、输入、输出和状态），<strong>每个进程有其独立的地址空间和执行程序的实体，这个执行程序的实体也就是线程</strong>。进程用来把资源集中到一起，线程供CPU调度来执行程序。但如果进程和线程是一对一的关系，那我认为也就没必要再创造出线程这个概念，所以探讨线程离不开多线程，一个进程下通常会有多个线程，我认为一个进程并行运行多个线程，就是对一台计算机并行运行多个进程的模拟，前者是多线程共享进程的地址空间和其他资源，后者是多进程共享这台计算机的物理资源。<br> （插一嘴，多线程的意义是通过拆分简化程序设计和提高性能，其中提高性能在于线程比进程更轻量级，更快创建与摧毁，以及充分利用CPU资源）<br> 刚提到每个进程有独立的地址空间，因此进程之间保持了较高的独立性，通常互不相干；而进程的不同线程之间独立性不高，它们有完全一样的地址空间，共享着进程的资源比如全局变量，可以合作完成一些任务。当然，每个线程有自己私有的程序计数器、寄存器、堆栈和状态，这些东西帮助线程更好地执行程序和上下文切换。</p>
+</li>
+<li><p>进程为什么切换慢</p>
+</li>
+<li><p>死锁是什么？形成的条件？</p>
+<p> 用语言表述的话就是，有这样一个进程集合：这个集合中的每个进程都在等待资源的释放，但这些资源又被集合中其他进程占有，这么进程集合就是死锁的。<br> 死锁形成的四个条件：</p>
+<ol>
+<li>互斥条件：资源只有被占有和可用这两个状态。</li>
+<li>占有和等待条件：已经得到某个资源的进程还可以去请求新的资源。</li>
+<li>不可抢占条件：资源被分配后不能被其他进程抢占，只能由持有进程显式释放。</li>
+<li>环路等待条件：把所有进程和资源都看作一张有向图的节点，进程P需要获取某资源R,那就把P指向R；资源R被进程P占有，那就是R指向p。这张图上形成了环。</li>
+</ol>
+</li>
+</ol>
+<h2 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h2><p>（西安华为云）</p>
+<ol>
+<li><p>sql语句的一生</p>
+</li>
+<li><p>mysql存储引擎间的区别</p>
+</li>
+<li><p>InnoDB存储结构</p>
+</li>
+<li><p>索引结构，索引覆盖和索引下推</p>
+</li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">mizore</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2023/10/10/Java%E5%90%8E%E7%AB%AF%E9%9D%A2%E7%BB%8F-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%E4%B8%AD/">http://example.com/2023/10/10/Java%E5%90%8E%E7%AB%AF%E9%9D%A2%E7%BB%8F-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%E4%B8%AD/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">樱与抱月</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/img/profilePicture.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2023/10/10/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" title="微服务"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">微服务</div></div></a></div></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="waline-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/profilePicture.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">mizore</div><div class="author-info__description">Welcome to my blog!!</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">17</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">9</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/GrayAndCyan" target="_blank" title=""><i class="fab fa-github"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#JavaSE"><span class="toc-number">1.</span> <span class="toc-text">JavaSE</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SSM-SpringBoot"><span class="toc-number">2.</span> <span class="toc-text">SSM + SpringBoot</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JUC"><span class="toc-number">3.</span> <span class="toc-text">JUC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A1%E7%BD%91"><span class="toc-number">4.</span> <span class="toc-text">计网</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="toc-number">5.</span> <span class="toc-text">操作系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">6.</span> <span class="toc-text">数据库</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/10/Java%E5%90%8E%E7%AB%AF%E9%9D%A2%E7%BB%8F-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%E4%B8%AD/" title="Java后端面经-持续更新中">Java后端面经-持续更新中</a><time datetime="2023-10-09T19:49:45.000Z" title="发表于 2023-10-09 11:49:45">2023-10-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/10/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" title="微服务">微服务</a><time datetime="2023-10-09T19:45:22.000Z" title="发表于 2023-10-09 11:45:22">2023-10-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/10/rabbitmq/" title="RabbitMQ">RabbitMQ</a><time datetime="2023-10-09T19:40:46.000Z" title="发表于 2023-10-09 11:40:46">2023-10-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/08/17/Redis-01/" title="Redis-01">Redis-01</a><time datetime="2023-08-17T06:56:44.000Z" title="发表于 2023-08-16 22:56:44">2023-08-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/07/11/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C01/" title="计算机网络 Part1">计算机网络 Part1</a><time datetime="2023-07-11T08:37:25.000Z" title="发表于 2023-07-11 00:37:25">2023-07-11</time></div></div></div></div></div></div></main><footer id="footer" style="background: rgba(255,255,255,.0)"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By mizore</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><div class="js-pjax"><script>function loadWaline () {
+  function initWaline () {
+    const waline = Waline.init(Object.assign({
+      el: '#waline-wrap',
+      serverURL: 'https://fragileu-blog.vercel.app/',
+      pageview: false,
+      dark: 'html[data-theme="dark"]',
+      path: window.location.pathname,
+      comment: false,
+    }, null))
+  }
+
+  if (typeof Waline === 'object') initWaline()
+  else {
+    getCSS('https://cdn.jsdelivr.net/npm/@waline/client/dist/waline.min.css').then(() => {
+      getScript('https://cdn.jsdelivr.net/npm/@waline/client/dist/waline.min.js').then(initWaline)
+    })
+  }
+}
+
+if ('Waline' === 'Waline' || !true) {
+  if (true) btf.loadComment(document.getElementById('waline-wrap'),loadWaline)
+  else setTimeout(loadWaline, 0)
+} else {
+  function loadOtherComment () {
+    loadWaline()
+  }
+}</script></div><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="true" data-text="Honoka,You,Ayumu,Sumire,Megumi" data-fontsize="15px" data-random="true" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
