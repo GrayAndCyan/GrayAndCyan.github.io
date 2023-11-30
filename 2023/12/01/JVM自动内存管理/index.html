@@ -1,0 +1,357 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>JVM自动内存管理 | 樱与抱月</title><meta name="author" content="mizore"><meta name="copyright" content="mizore"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="JVM自动内存管理  Java内存区域运行时数据区组成：  线程私有（生命周期与线程一致，线程间独立存储）： 程序计数器， 虚拟机栈， 本地方法栈 公共： 方法区， 堆  程序计数器： 字节码解释器工作时，PC充当当前线程所执行的字节码行号指示器，用于程序控制和线程恢复。 虚拟机栈： Java方法的调用和结束对应虚拟机栈中栈帧的入栈出栈，栈帧包括局部变量表、操作数栈、动态链接、方法出口等信息，栈帧">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM自动内存管理">
+<meta property="og:url" content="http://example.com/2023/12/01/JVM%E8%87%AA%E5%8A%A8%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/index.html">
+<meta property="og:site_name" content="樱与抱月">
+<meta property="og:description" content="JVM自动内存管理  Java内存区域运行时数据区组成：  线程私有（生命周期与线程一致，线程间独立存储）： 程序计数器， 虚拟机栈， 本地方法栈 公共： 方法区， 堆  程序计数器： 字节码解释器工作时，PC充当当前线程所执行的字节码行号指示器，用于程序控制和线程恢复。 虚拟机栈： Java方法的调用和结束对应虚拟机栈中栈帧的入栈出栈，栈帧包括局部变量表、操作数栈、动态链接、方法出口等信息，栈帧">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/profilePicture.jpg">
+<meta property="article:published_time" content="2023-12-01T00:53:08.000Z">
+<meta property="article:modified_time" content="2023-11-30T09:10:48.472Z">
+<meta property="article:author" content="mizore">
+<meta property="article:tag" content="JVM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/profilePicture.jpg"><link rel="shortcut icon" href="/img/profilePicture.jpg"><link rel="canonical" href="http://example.com/2023/12/01/JVM%E8%87%AA%E5%8A%A8%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'JVM自动内存管理',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-11-30 01:10:48'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (false) {
+    document.addEventListener('pjax:send', () => { preloader.initLoading() })
+    document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+  }
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/profilePicture.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">19</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">11</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2023/01/04/lbGZIwpXcrMNegt.png')"><nav id="nav"><span id="blog-info"><a href="/" title="樱与抱月"><span class="site-name">樱与抱月</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">JVM自动内存管理</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-12-01T00:53:08.000Z" title="发表于 2023-11-30 16:53:08">2023-11-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-11-30T09:10:48.472Z" title="更新于 2023-11-30 01:10:48">2023-11-30</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="JVM自动内存管理"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="JVM自动内存管理"><a href="#JVM自动内存管理" class="headerlink" title="JVM自动内存管理"></a>JVM自动内存管理</h1><br>
+
+<h2 id="Java内存区域"><a href="#Java内存区域" class="headerlink" title="Java内存区域"></a>Java内存区域</h2><h3 id="运行时数据区"><a href="#运行时数据区" class="headerlink" title="运行时数据区"></a>运行时数据区</h3><p>组成：</p>
+<ul>
+<li>线程私有（生命周期与线程一致，线程间独立存储）： 程序计数器， 虚拟机栈， 本地方法栈</li>
+<li>公共： 方法区， 堆</li>
+</ul>
+<p>程序计数器： 字节码解释器工作时，PC充当当前线程所执行的字节码行号指示器，用于程序控制和<strong>线程恢复</strong>。</p>
+<p>虚拟机栈： Java方法的调用和结束对应虚拟机栈中栈帧的入栈出栈，栈帧包括局部变量表、操作数栈、动态链接、方法出口等信息，栈帧大小在编译期就确定。局部变量表以槽为单位存放基本数据类型、对象引用、指明字节码地址的returnAddress类型。</p>
+<p>本地方法栈： 虚拟机栈是为Java方法，为字节码服务；本地方法栈则是为本地方法服务。HotSpot虚拟机将虚拟机栈和本地方法栈合二为一。</p>
+<p>方法区： 存储被虚拟机加载的类型信息、常量、静态变量、即时编译器编译后的代码缓存等。运行时常量池是方法区的一部分，存放常量（.class文件常量池表的内容以及运行时动态入池的新常量，如使用 <code>String</code> 的 <code>intern()</code>入池的）。对于HotSpot虚拟机，Java8以前，使用永久代实现方法区，但在Java7时将字符串常量池和静态变量迁移到堆内存的区域，在Java8后将永久代剩余的部分迁移到基于本地内存的元空间。 这部分比较混乱，网上的说法也很不一而且很多我不认可，就连一些权威书上也没有阐述清楚，现在就简记为方法区包括「基于本地内存的元空间（主要是类型信息）」和「基于Java堆的字符串常量池和静态变量区域」即可（毕竟现在不用8以前的版本）。</p>
+<p>堆： 用于存放几乎所有的对象实例（说几乎是因为存在栈上分配、标量替换等优化手段作为反例）。</p>
+<h3 id="创建Java对象"><a href="#创建Java对象" class="headerlink" title="创建Java对象"></a>创建Java对象</h3><p>步骤：</p>
+<ol>
+<li>虚拟机执行到一条<code>new</code>指令时，检查该指令的参数——类型信息，是否已完成类加载，没有则先去执行类加载。</li>
+<li>为新生对象在堆中分配内存： 对象所需内存大小在类加载完成后就完全确定，根据Java堆是否规整（由垃圾回收器是否带有空间压缩整理能力决定），选择采用<strong>指针碰撞</strong>还是<strong>空闲列表</strong>分配方式。毕竟堆是线程共享的，在并发情形下分配对象内存时，需保证线程安全，虚拟机也有两种方案：<strong>CAS+失败重试</strong>，<strong>本地线程分配缓存（TLAB）</strong>，后者与JUC中原子累加器的设置多个累加单元的思想类似，将堆内存为每个线程分出各自独立的缓冲区，每个线程操作它对应的缓冲区，避免竞态。</li>
+<li>处理分配到的对象内存： 设置对象头，为实例数据部分赋零值。</li>
+<li>调用构造方法，按程序员意愿对对象进行初始化。具体来讲，自下而上递归地调用父类构造方法，直至Object类，此后自上而下地进行显示初始化（即为指定了默认值的成员变量赋值）和执行构造方法主体，直至回到当前创建类型。</li>
+<li>返回对象引用，这个引用通过句柄或直接指针的方式访问对象，通常采用后者，在只需要访问对象实例数据的情形下可以节省一次类型数据指针定位的时间开销。</li>
+</ol>
+<br>
+
+<h2 id="对象存亡判断算法"><a href="#对象存亡判断算法" class="headerlink" title="对象存亡判断算法"></a>对象存亡判断算法</h2><p>在何时怎样回收哪些内存。关于哪些内存：随方法结束和线程结束而回收的内存区域不必考虑，所以需要考虑内存回收的区域是堆和方法区。</p>
+<h3 id="引用技术算法"><a href="#引用技术算法" class="headerlink" title="引用技术算法"></a>引用技术算法</h3><p>在对象中添加一个引用计数器标识引用个数，为0则这个对象不可能再被用到。</p>
+<p>简单高效，但无法解决循环引用问题（循环引用的几个对象无用时计数器也不会减为0，导致不被判断为垃圾对象）。</p>
+<h3 id="可达性分析算法"><a href="#可达性分析算法" class="headerlink" title="可达性分析算法"></a>可达性分析算法</h3><p>对象引用图中，有一些对象属于 <code>GC Root</code>，构成 <code>GC Root Set</code>，则以这个集合中的对象为起点，以引用链为路径，不可达的对象判定为可回收对象。</p>
+<p>作为 <code>GC Root</code> 的对象有哪些呢？</p>
+<ul>
+<li>虚拟机栈和本地方法栈栈帧本地变量表中引用的对象</li>
+<li>方法区中常量、类静态属性引用的对象</li>
+<li>被同步锁 <code>synchronized</code> 持有的对象</li>
+<li>JVM内部的引用等</li>
+</ul>
+<p><strong>自救：</strong></p>
+<p>进一步说，不可达的对象判定为可回收对象，此时对象变为“缓刑”阶段，它还有一次自救的机会：虚拟机会判断有必要执行<code>finalize()</code> 方法的对象（具体指重写了<code>finalize()</code>且该方法没被虚拟机调用过的对象）有哪些，创建低调度优先级的 <code>Finalizer</code>线程，为这些对象执行它们的<code>finalize()</code>方法。对象可以通过 <code>finalize()</code>方法自救，做法是在这个方法中重新与引用链上的任何一个对象建立关联，比如将 <code>this</code> 赋给某个类变量或对象的成员变量。</p>
+<p>如此，让指定类型的对象多活过一次GC的意义是什么呢……？</p>
+<h3 id="回收方法区"><a href="#回收方法区" class="headerlink" title="回收方法区"></a>回收方法区</h3><p>回收需求少但不代表不需要回收，主要回收内容为废弃的常量和不再使用的类型，前者于回收Java堆中的对象类似，后者回收条件更难以达到。</p>
+<br>
+
+<h2 id="垃圾回收算法"><a href="#垃圾回收算法" class="headerlink" title="垃圾回收算法"></a>垃圾回收算法</h2><h3 id="分代收集理论"><a href="#分代收集理论" class="headerlink" title="分代收集理论"></a>分代收集理论</h3><h4 id="为什么要分代？"><a href="#为什么要分代？" class="headerlink" title="为什么要分代？"></a>为什么要分代？</h4><p>经验法则：1. 绝大多数对象都是朝生夕灭的； 2. 熬过越多次GC的对象就越难消亡。</p>
+<p>因此，对象的年龄是有两极分化特征的，基于这点，将不同年龄特征的对象分配到不同区域中区别对待，“对症下药”：</p>
+<ul>
+<li>对于朝生夕灭的对象，集中在一个区域，该区域GC时由于大部分对象都要被回收，那么在GC处理时从标记大量需回收的对象转变为只关注少量存活下来的对象，这样能以较低的代价（包括耗时与内存占用）回收大量的空间；</li>
+<li>对于难以消亡的对象，集中在一个区域，虚拟机就可以降低对该区域的GC频率；</li>
+</ul>
+<p>这就同时兼顾了垃圾回收的时间开销（如回收细节与频率上的优化）和对内存空间的有效利用（保证了对无用对象的尽可能及时回收）。</p>
+<h4 id="分代收集的一个痛点：跨代引用"><a href="#分代收集的一个痛点：跨代引用" class="headerlink" title="分代收集的一个痛点：跨代引用"></a>分代收集的一个痛点：跨代引用</h4><p>不同分代区域的对象间不是完全独立的，可能存在跨代引用，这就使单独GC新生代（Minor GC）时不得不扫描老年代，反之亦然。显然需要想办法避免这种跨代引用带来的额外区域扫描开销。</p>
+<p>解决：</p>
+<p>第三条经验法则： 跨代引用相对于同代引用仅占极少数。</p>
+<p>在新生代建立维护一个“记忆集”，标识出老年代中存在跨代引用的部分，在MinorGC时将这部分对象加入到GCRoot进行扫描。</p>
+<p>记忆集： 记录从非收集区域中指向收集区域的指针集合。</p>
+<h3 id="标记-清除算法（Mark-Sweep）"><a href="#标记-清除算法（Mark-Sweep）" class="headerlink" title="标记-清除算法（Mark-Sweep）"></a>标记-清除算法（Mark-Sweep）</h3><p>分两阶段：先标记可回收变量（也可以反过来标记存活对象），然后按标记进行对可回收对象的清除。</p>
+<p>是最基础的收集算法，有两个主要问题：</p>
+<ol>
+<li>执行效率不稳定，对象数量多且大部分需要回收时，两个阶段效率都会降低。</li>
+<li>内存空间碎片化，在分配大对象时不得不提前触发GC。</li>
+</ol>
+<h3 id="标记-复制算法"><a href="#标记-复制算法" class="headerlink" title="标记-复制算法"></a>标记-复制算法</h3><p>对内存1：1分两块，一块用于存储创建的对象，在GC时将这块内存中存活对象复制到另一块内存，清空第一块内存。接着这两块区域作用交替，第二块用于分配对象，GC时将存活对象复制到第一块区域。</p>
+<p>在新生代应用该算法时，由于新生代对象绝大部分朝生夕灭（经IBM统计98%的新生代对象会被回收），通常把1：1的比例改为8：1：1,分别是eden区，survivor0，survivor1。先在eden和s0区分配对象，GC时将存活对象复制到s1，清除eden和s0；接着s0和s1作用交替：在eden和s1区分配对象，GC时将存活对象复制到s0，清除eden和s1。</p>
+<p>在一次GC时存活对象超过一个survivor空间大小时，触发分配担保机制，将多出来的存活对象直接复制进老年代。</p>
+<p>优势是不易造成空间碎片，存活对象较少时性能较好；问题是当有较多存活对象时，复制存活对象的开销大。所以显然该算法更适合回收新生代，不适合老年代。</p>
+<h3 id="标记-整理算法"><a href="#标记-整理算法" class="headerlink" title="标记-整理算法"></a>标记-整理算法</h3><p>标记-复制算法需要频繁复制存活对象，在存活对象很多（如老年代）情形下开销大。标记-整理算法的标记阶段与标记-清除算法类似，在第二阶段，将需存活的对象都向内存空间的一端移动，然后直接清理掉边界以外的内存。</p>
+<p>与标记-清除相比的本质差别在于，标记-整理是一种移动式的回收算法，标记-清除是非移动式。</p>
+<p>不易造成空间碎片。</p>
+<p>移动式在内存回收时更复杂更耗时： 需移动存活对象和更新涉及的引用，Stop The World；<br>非移动式在内存分配和访问时更复杂更耗时： 需处理空间碎片问题，并且容易造成对象分配分散，不利于CPU cache 践行空间局部性原理（数据被访问，其相邻位置的数据很可能被一同访问到）。</p>
+<p>通常，更关注高吞吐量（用户程序耗时&#x2F;用户程序耗时+JVM内存自动管理耗时）选择标记-整理算法；更关注低延迟（用户线程停顿时间）选择标记清除。</p>
+<br>
+
+<h2 id="垃圾收集器"><a href="#垃圾收集器" class="headerlink" title="垃圾收集器"></a>垃圾收集器</h2><p>之所以按G1划分，是因为G1是里程碑的垃圾收集器产品，是目前最常用的垃圾收集器。对于垃圾收集器将做较为简单的描述，细节还请查阅资料。</p>
+<h3 id="G1之前的垃圾收集器"><a href="#G1之前的垃圾收集器" class="headerlink" title="G1之前的垃圾收集器"></a>G1之前的垃圾收集器</h3><h4 id="新生代"><a href="#新生代" class="headerlink" title="新生代"></a>新生代</h4><p><strong>1. Serial</strong></p>
+<p>单线程，简单；</p>
+<p>基于标记复制算法收集新生代；</p>
+<p>GC全程Stop the world；</p>
+<p>由于额外内存消耗最少（在所有收集器中），适合用于内存资源受限的环境；</p>
+<p>由于单线程避免了线程交互开销，有最高的单线程收集效率，因此适用于单核处理器或处理器核心数较少的环境。</p>
+<p>Serial对于运行在客户端模式下的虚拟机来说是一个很好的选择。</p>
+<p><strong>2. ParNew</strong></p>
+<p>注： 并行<strong>在JVM垃圾收集器语境下</strong>指多个GC线程同时运行；并发指GC线程与用户线程同时运行。</p>
+<p>Serial的多线程并行版本，其他方面并无二异。</p>
+<p>G1出现前常用于运行在服务端回收新生代，与回收老年代的CMS配合使用。</p>
+<p><strong>3. Parallel Scavenge</strong></p>
+<p><strong>“吞吐量优先收集器”</strong></p>
+<p>与ParNew相似，同样的适用新生代、基于标记复制算法、并行收集。但比起缩短用户线程停顿时间，它更关注达到一个可控的吞吐量（<code>运行用户代码时间 / 运行用户代码时间 + 运行垃圾收集时间</code>）。</p>
+<p>支持垃圾收集的<strong>自适应调节策略</strong>：虚拟机会根据当前系统的运行情况，收集性能监控信息，动态调整GC相关参数，以提供最合适的停顿时间或最大的吞吐量。</p>
+<p>没有使用HotSpot原本设计的分代框架以及收集理念不同，无法与CMS配合使用。</p>
+<h4 id="老年代"><a href="#老年代" class="headerlink" title="老年代"></a>老年代</h4><p><strong>4. Serial Old</strong></p>
+<p>Serial的老年代版，单线程，适合客户端模式，基于标记整理算法收集老年代。</p>
+<p><strong>5. Parallel Old</strong></p>
+<p>Parallel Scavenge 的老年代版，多线程并行收集，基于标记整理回收老年代。在注重吞吐量场景，可以考虑 Parallel Old 与 Parallel Scavenge 的搭配。</p>
+<p><strong>6. CMS（Concurrent Mark Sweep）</strong></p>
+<p>Jdk5的小里程碑收集器  “并发低停顿收集器”</p>
+<p>以获取最短回收停顿时间为目的。对于关注服务的响应速度，强调良好的用户体验，希望系统停顿时间尽可能短的应用，CMS便很好的满足这一需求。</p>
+<p>从名字上看，基于标记清除算法，是非移动式（移动式与非移动式收集算法的优劣对比上面有提）。</p>
+<p>收集过程：<br>（其中初始标记和重新标记会 StopTheWorld（但这两个阶段用时较短），其他阶段是与用户线程并发的）</p>
+<ol>
+<li>初始标记： 标记GCRoots能直接关联到的对象。</li>
+<li>并发标记： 从GCRoots直接关联的对象开始遍历整个对象图。</li>
+<li>重新标记： 修正上一阶段中用户线程运行而影响的标记记录。（增量更新算法）</li>
+<li>并发清除： 清除标记阶段断定的已死亡对象。</li>
+</ol>
+<p>优点：并发，低停顿</p>
+<p>缺点：</p>
+<ol>
+<li>处理器资源敏感，在并发阶段GC线程占用CPU资源降低用户线程性能。</li>
+<li>无法处理“浮动垃圾”——即并发阶段用户线程产生的新的垃圾，需要放到下次GC.</li>
+<li>标记清除算法的大量空间碎片。</li>
+</ol>
+<h3 id="G1（Garbage-First）"><a href="#G1（Garbage-First）" class="headerlink" title="G1（Garbage First）"></a>G1（Garbage First）</h3><p>主要面向服务端应用。收集器的里程碑： 跳出一次GC回收整个分代或者整个堆的樊笼，开创追求垃圾收集能够应付应用的内存分配速率，而不必一次性把整个Java堆都清理干净的设计导向。</p>
+<p><strong>停顿时间可控：</strong></p>
+<p>将Java堆内存划分为多个大小相等的Region，每块Region可以充当eden区、survivor区、老年代区、另外还有看作老年代的用于存放大对象（大小超过<code>RegionSize / 2</code> 的对象）的Humongous区。然后维护一个优先级列表：短时间内能回收到大量垃圾的Region区域，具有较高的价值。</p>
+<p>Region每块大小与G1停顿时间可通过参数设置： </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-XX:G1HeapRegionSize  <span class="comment"># 设置G1 Region块的大小，1～32MB且应为2的次幂数</span></span><br><span class="line"></span><br><span class="line">-XX:MaxGCPauseMillis <span class="comment"># 设置G1期望最大停顿时间，默认200ms</span></span><br></pre></td></tr></table></figure>
+
+<p>G1根据设置的停顿时间，优先回收一定数量的<strong>回收价值最大</strong>的那些Region，这些Region构成回收集。这种使用Region划分内存空间，以及具有优先级的区域回收方式，保证了G1在有限时间内获取尽可能高的收集效率。</p>
+<p>收集过程：<br>（并发标记阶段是并发的）</p>
+<ol>
+<li>初始标记： 标记GCRoots能直接关联到的对象。</li>
+<li>并发标记： 从GCRoot遍历整个对象图。使用了原始快照算法（SATB，细节略了，G1中有太多实现细节，这里只是写个简介）。</li>
+<li>最终标记： 处理SATB记录。</li>
+<li>筛选回收： 根据指定停顿时间和价值序选择一定数量的Region构成回收集，把回收集的存活对象复制到空Region，清掉旧Region。</li>
+</ol>
+<p>优势： </p>
+<ol>
+<li>停顿时间可控，利于平衡吞吐量和延迟以及按需调整。</li>
+<li>基于Region价值优先的回收方式，收集效率高。</li>
+<li>从整体上基于标记整理，在局部上（两个Region之间）基于标记复制，都不会产生空间碎片，利于程序长久运行和避免分配大对象时的被迫GC。</li>
+<li>并发</li>
+</ol>
+<p>缺点： </p>
+<ol>
+<li>有很高的收集时额外内存占用：每个Region都要维护记忆集解决跨代引用问题。</li>
+<li>较高的程序运行时额外负载：用户程序运行时跟踪引用变化产生额外负担。</li>
+</ol>
+<h3 id="G1后的两款低延迟收集器"><a href="#G1后的两款低延迟收集器" class="headerlink" title="G1后的两款低延迟收集器"></a>G1后的两款低延迟收集器</h3><p>啊…发配到虚拟机去啃这两款收集器原理…绝对是Jvav程序员做的很有“文化”的一件事，用计组老师的说法说。</p>
+<h4 id="Shenendoah"><a href="#Shenendoah" class="headerlink" title="Shenendoah"></a>Shenendoah</h4><p>并发的标记整理与低记忆集维护成本：连接矩阵、读屏障、转发指针等技术</p>
+<h4 id="ZGC"><a href="#ZGC" class="headerlink" title="ZGC"></a>ZGC</h4><p>ZGC是一款基于Region内存布局的，使用读屏障、染色指针和内存多重映射等技术实现可并发的标记-整理算法的，以低延迟为首要目标的垃圾收集器。</p>
+<h4 id="OGC"><a href="#OGC" class="headerlink" title="OGC"></a>OGC</h4><p>最火爆的收集器，我不好说。</p>
+<h2 id="内存分配策略"><a href="#内存分配策略" class="headerlink" title="内存分配策略"></a>内存分配策略</h2><ol>
+<li>对象优先分配在eden区，eden空间不足是触发一次Minor GC。</li>
+<li>长期存活的对象将进入老年代。<code>-XX：MaxTenuringThreshold</code> 指定对象进入老年代的年龄阈值，默认15。每熬过一次GC年龄增1,初始是0。</li>
+<li>大对象直接进入老年代。避免编写创建短命大对象。多大是大对象？通过 <code>-XX:PretenureSizeThreshold</code> 指定（该参数只对Serial 和 ParNew有效）</li>
+<li>动态对象年龄判定： survivor区如果有超过该区域大小一半的同龄对象，那么大于等于这个年龄的对象直接进入老年代，而不必等到<code>MaxTenuringThreshold</code>。</li>
+<li>空间分配担保。</li>
+</ol>
+<h2 id="指令记录"><a href="#指令记录" class="headerlink" title="指令记录"></a>指令记录</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># jinfo</span></span><br><span class="line">Usage:</span><br><span class="line">    jinfo &lt;option&gt; &lt;pid&gt;</span><br><span class="line">       (to connect to a running process)</span><br><span class="line"></span><br><span class="line"><span class="built_in">where</span> &lt;option&gt; is one of:</span><br><span class="line">    -flag &lt;name&gt;         to <span class="built_in">print</span> the value of the named VM flag</span><br><span class="line">    -flag [+|-]&lt;name&gt;    to <span class="built_in">enable</span> or <span class="built_in">disable</span> the named VM flag</span><br><span class="line">    -flag &lt;name&gt;=&lt;value&gt; to <span class="built_in">set</span> the named VM flag to the given value</span><br><span class="line">    -flags               to <span class="built_in">print</span> VM flags</span><br><span class="line">    -sysprops            to <span class="built_in">print</span> Java system properties</span><br><span class="line">    &lt;no option&gt;          to <span class="built_in">print</span> both VM flags and system properties</span><br><span class="line">    -? | -h | --<span class="built_in">help</span> | -<span class="built_in">help</span> to <span class="built_in">print</span> this <span class="built_in">help</span> message</span><br><span class="line"></span><br><span class="line"><span class="comment"># 打印gc信息</span></span><br><span class="line">-Xlog:gc    <span class="comment"># 简略</span></span><br><span class="line">-Xlog:gc*   <span class="comment"># 详细</span></span><br><span class="line"></span><br><span class="line">-XX:+/-UseTLAB  <span class="comment"># 使用与否TLAB（本地线程分配缓冲区，用于按线程划分Java堆，避免并发竞态）</span></span><br><span class="line"></span><br><span class="line">-XX:G1HeapRegionSize  <span class="comment"># 设置G1 Region块的大小，1～32MB且应为2的次幂数</span></span><br><span class="line"></span><br><span class="line">-XX:MaxGCPauseMillis <span class="comment"># 设置G1期望最大停顿时间，默认200ms</span></span><br><span class="line"></span><br><span class="line">-XX：MaxTenuringThreshold <span class="comment"># 指定对象进入老年代的年龄阈值，默认15。每熬过一次GC年龄增1,初始是0。</span></span><br><span class="line"></span><br><span class="line">-XX:PretenureSizeThreshold <span class="comment"># 指定直接进入老年代的大对象大小阈值（该参数只对Serial 和 ParNew有效）</span></span><br></pre></td></tr></table></figure></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">mizore</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2023/12/01/JVM%E8%87%AA%E5%8A%A8%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">http://example.com/2023/12/01/JVM%E8%87%AA%E5%8A%A8%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">樱与抱月</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/JVM/">JVM</a></div><div class="post_share"><div class="social-share" data-image="/img/profilePicture.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/12/01/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" title="Java并发编程"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Java并发编程</div></div></a></div><div class="next-post pull-right"><a href="/2023/10/10/Java%E5%90%8E%E7%AB%AF%E9%9D%A2%E7%BB%8F-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%E4%B8%AD/" title="Java后端面经-持续更新中"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Java后端面经-持续更新中</div></div></a></div></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="waline-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/profilePicture.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">mizore</div><div class="author-info__description">Welcome to my blog!!</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">19</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">11</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/GrayAndCyan" target="_blank" title=""><i class="fab fa-github"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#JVM%E8%87%AA%E5%8A%A8%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">JVM自动内存管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Java%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F"><span class="toc-number">1.1.</span> <span class="toc-text">Java内存区域</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA"><span class="toc-number">1.1.1.</span> <span class="toc-text">运行时数据区</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAJava%E5%AF%B9%E8%B1%A1"><span class="toc-number">1.1.2.</span> <span class="toc-text">创建Java对象</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E5%AD%98%E4%BA%A1%E5%88%A4%E6%96%AD%E7%AE%97%E6%B3%95"><span class="toc-number">1.2.</span> <span class="toc-text">对象存亡判断算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%95%E7%94%A8%E6%8A%80%E6%9C%AF%E7%AE%97%E6%B3%95"><span class="toc-number">1.2.1.</span> <span class="toc-text">引用技术算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E8%BE%BE%E6%80%A7%E5%88%86%E6%9E%90%E7%AE%97%E6%B3%95"><span class="toc-number">1.2.2.</span> <span class="toc-text">可达性分析算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9E%E6%94%B6%E6%96%B9%E6%B3%95%E5%8C%BA"><span class="toc-number">1.2.3.</span> <span class="toc-text">回收方法区</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95"><span class="toc-number">1.3.</span> <span class="toc-text">垃圾回收算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E4%BB%A3%E6%94%B6%E9%9B%86%E7%90%86%E8%AE%BA"><span class="toc-number">1.3.1.</span> <span class="toc-text">分代收集理论</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%88%86%E4%BB%A3%EF%BC%9F"><span class="toc-number">1.3.1.1.</span> <span class="toc-text">为什么要分代？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E4%BB%A3%E6%94%B6%E9%9B%86%E7%9A%84%E4%B8%80%E4%B8%AA%E7%97%9B%E7%82%B9%EF%BC%9A%E8%B7%A8%E4%BB%A3%E5%BC%95%E7%94%A8"><span class="toc-number">1.3.1.2.</span> <span class="toc-text">分代收集的一个痛点：跨代引用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E8%AE%B0-%E6%B8%85%E9%99%A4%E7%AE%97%E6%B3%95%EF%BC%88Mark-Sweep%EF%BC%89"><span class="toc-number">1.3.2.</span> <span class="toc-text">标记-清除算法（Mark-Sweep）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E8%AE%B0-%E5%A4%8D%E5%88%B6%E7%AE%97%E6%B3%95"><span class="toc-number">1.3.3.</span> <span class="toc-text">标记-复制算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E8%AE%B0-%E6%95%B4%E7%90%86%E7%AE%97%E6%B3%95"><span class="toc-number">1.3.4.</span> <span class="toc-text">标记-整理算法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8"><span class="toc-number">1.4.</span> <span class="toc-text">垃圾收集器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#G1%E4%B9%8B%E5%89%8D%E7%9A%84%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8"><span class="toc-number">1.4.1.</span> <span class="toc-text">G1之前的垃圾收集器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B0%E7%94%9F%E4%BB%A3"><span class="toc-number">1.4.1.1.</span> <span class="toc-text">新生代</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%80%81%E5%B9%B4%E4%BB%A3"><span class="toc-number">1.4.1.2.</span> <span class="toc-text">老年代</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#G1%EF%BC%88Garbage-First%EF%BC%89"><span class="toc-number">1.4.2.</span> <span class="toc-text">G1（Garbage First）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#G1%E5%90%8E%E7%9A%84%E4%B8%A4%E6%AC%BE%E4%BD%8E%E5%BB%B6%E8%BF%9F%E6%94%B6%E9%9B%86%E5%99%A8"><span class="toc-number">1.4.3.</span> <span class="toc-text">G1后的两款低延迟收集器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Shenendoah"><span class="toc-number">1.4.3.1.</span> <span class="toc-text">Shenendoah</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ZGC"><span class="toc-number">1.4.3.2.</span> <span class="toc-text">ZGC</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#OGC"><span class="toc-number">1.4.3.3.</span> <span class="toc-text">OGC</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5"><span class="toc-number">1.5.</span> <span class="toc-text">内存分配策略</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E4%BB%A4%E8%AE%B0%E5%BD%95"><span class="toc-number">1.6.</span> <span class="toc-text">指令记录</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/12/01/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" title="Java并发编程">Java并发编程</a><time datetime="2023-12-01T01:11:31.000Z" title="发表于 2023-11-30 17:11:31">2023-11-30</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/12/01/JVM%E8%87%AA%E5%8A%A8%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" title="JVM自动内存管理">JVM自动内存管理</a><time datetime="2023-12-01T00:53:08.000Z" title="发表于 2023-11-30 16:53:08">2023-11-30</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/10/Java%E5%90%8E%E7%AB%AF%E9%9D%A2%E7%BB%8F-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%E4%B8%AD/" title="Java后端面经-持续更新中">Java后端面经-持续更新中</a><time datetime="2023-10-09T19:49:45.000Z" title="发表于 2023-10-09 11:49:45">2023-10-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/10/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" title="微服务">微服务</a><time datetime="2023-10-09T19:45:22.000Z" title="发表于 2023-10-09 11:45:22">2023-10-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/10/rabbitmq/" title="RabbitMQ">RabbitMQ</a><time datetime="2023-10-09T19:40:46.000Z" title="发表于 2023-10-09 11:40:46">2023-10-09</time></div></div></div></div></div></div></main><footer id="footer" style="background: rgba(255,255,255,.0)"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By mizore</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><div class="js-pjax"><script>function loadWaline () {
+  function initWaline () {
+    const waline = Waline.init(Object.assign({
+      el: '#waline-wrap',
+      serverURL: 'https://fragileu-blog.vercel.app/',
+      pageview: false,
+      dark: 'html[data-theme="dark"]',
+      path: window.location.pathname,
+      comment: false,
+    }, null))
+  }
+
+  if (typeof Waline === 'object') initWaline()
+  else {
+    getCSS('https://cdn.jsdelivr.net/npm/@waline/client/dist/waline.min.css').then(() => {
+      getScript('https://cdn.jsdelivr.net/npm/@waline/client/dist/waline.min.js').then(initWaline)
+    })
+  }
+}
+
+if ('Waline' === 'Waline' || !true) {
+  if (true) btf.loadComment(document.getElementById('waline-wrap'),loadWaline)
+  else setTimeout(loadWaline, 0)
+} else {
+  function loadOtherComment () {
+    loadWaline()
+  }
+}</script></div><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="true" data-text="Honoka,You,Ayumu,Sumire,Megumi" data-fontsize="15px" data-random="true" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

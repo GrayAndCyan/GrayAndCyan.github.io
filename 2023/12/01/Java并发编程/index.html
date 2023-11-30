@@ -1,0 +1,265 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Java并发编程 | 樱与抱月</title><meta name="author" content="mizore"><meta name="copyright" content="mizore"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="JUC调度线程，发生竞态os的任务调度器不会分时间片给到Timed waiting状态的线程，但可能会分时间片给Runnable的线程。 线程在sleep&#x2F;wait&#x2F;join时被其他线程interrupt，打断标记（isInterrupted()）是false，会抛异常 守护线程与其他线程相比的不同在于，同一进程中，当所有非守护线程都结束时，守护进程会立刻结束，不管守护进程的代码有没有执行完。垃圾">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java并发编程">
+<meta property="og:url" content="http://example.com/2023/12/01/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/index.html">
+<meta property="og:site_name" content="樱与抱月">
+<meta property="og:description" content="JUC调度线程，发生竞态os的任务调度器不会分时间片给到Timed waiting状态的线程，但可能会分时间片给Runnable的线程。 线程在sleep&#x2F;wait&#x2F;join时被其他线程interrupt，打断标记（isInterrupted()）是false，会抛异常 守护线程与其他线程相比的不同在于，同一进程中，当所有非守护线程都结束时，守护进程会立刻结束，不管守护进程的代码有没有执行完。垃圾">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/profilePicture.jpg">
+<meta property="article:published_time" content="2023-12-01T01:11:31.000Z">
+<meta property="article:modified_time" content="2023-11-30T09:11:53.080Z">
+<meta property="article:author" content="mizore">
+<meta property="article:tag" content="JUC">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/profilePicture.jpg"><link rel="shortcut icon" href="/img/profilePicture.jpg"><link rel="canonical" href="http://example.com/2023/12/01/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Java并发编程',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-11-30 01:11:53'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (false) {
+    document.addEventListener('pjax:send', () => { preloader.initLoading() })
+    document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+  }
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/profilePicture.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">19</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">11</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2023/01/04/lbGZIwpXcrMNegt.png')"><nav id="nav"><span id="blog-info"><a href="/" title="樱与抱月"><span class="site-name">樱与抱月</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Java并发编程</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-12-01T01:11:31.000Z" title="发表于 2023-11-30 17:11:31">2023-11-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-11-30T09:11:53.080Z" title="更新于 2023-11-30 01:11:53">2023-11-30</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Java并发编程"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="JUC"><a href="#JUC" class="headerlink" title="JUC"></a>JUC</h1><h3 id="调度线程，发生竞态"><a href="#调度线程，发生竞态" class="headerlink" title="调度线程，发生竞态"></a>调度线程，发生竞态</h3><p>os的任务调度器不会分时间片给到<code>Timed waiting</code>状态的线程，但可能会分时间片给<code>Runnable</code>的线程。</p>
+<p>线程在<code>sleep/wait/join</code>时被其他线程<code>interrupt</code>，打断标记（<code>isInterrupted()</code>）是<code>false</code>，会抛异常</p>
+<p>守护线程与其他线程相比的不同在于，同一进程中，当所有非守护线程都结束时，守护进程会立刻结束，不管守护进程的代码有没有执行完。垃圾回收线程就是一个守护线程。</p>
+<p>线程上下文切换引起的指令交错，导致了多线程读写共享资源引起的线程安全问题。即多线程进入临界区，发生竟态条件。</p>
+<h3 id="线程同步"><a href="#线程同步" class="headerlink" title="线程同步"></a>线程同步</h3><h4 id="synchronized锁"><a href="#synchronized锁" class="headerlink" title="synchronized锁"></a>synchronized锁</h4><p>如果对象是偏向状态（<code>MarkWord</code>从低数第三位是1,可加偏向锁），对象调用了一次<code>hashcode()</code>方法后，对象会从偏向状态撤销到不可偏向的普通状态（<code>MarkWord</code>第三位是0），原因是<code>hashcode</code>占用了<code>MarkWord</code>的一些位（占31位），如果再加偏向锁，总共64bit的<code>MarkWord</code>不足以存下后需要存线程标识的位（需要54位）。<br>轻量级锁和重量级锁不受<code>hashcode()</code>方法调用的影响，因为它们的做法是把<code>hashcode</code>存到了线程栈中的锁记录<code>lock_record</code>或者<code>monitor</code> 中。</p>
+<p>JEP374 jdk15不推荐与将废弃偏向锁：<br>偏向锁旨在避免在获取<code>monitor</code>时执行<code>cas （compare and swap）</code>原子操作。方法是假设加锁变量由指定线程拥有，直到其他线程尝试获取它，这时再撤销偏向锁，根据是否竞争升级为轻量级锁或重量级锁。当许多线程对以单线程方式使用的对象执行许多同步操作时，偏置锁比常规锁定技术有显著的性能改进。<br>这一提升在如今看并不再明显。偏向锁在发生竞争情况下需要昂贵的撤销成本，因此只有大量无竞争<code>synchronized</code>同步操作的应用才会从偏向锁中获益。过去使用<code>HashTable</code> <code>Vector</code> 的线程安全集合的API，频繁用到<code>synchronized</code>同步操作，在单线程模式下使偏向锁大有作用。如今的做法不同了，刚提到的古老集合人们很少使用，取而代之的是单线程模式下使用非同步集合<code>HashMap</code> <code>ArrayList</code> ，或在多线程模式下使用jdk5加入的高性能并发集合<code>ConcurrentHashMap</code> <code>CopyOnWriteArrayList</code>，它们减少了不必要的 <code>synchronized</code>，获得了比偏向锁优化更大的性能提升。<br>此外，使用线程池和工作线程构建的应用在禁用偏向锁后性能更好。<br>此外，偏向锁设计对同步子系统引入了复杂的代码，对虚拟机其他组件有侵入，不利于代码理解与设计改进。</p>
+<p>轻量级锁源码分析：<br>BasicLock 轻量级锁<br>ObjectMonitor 重量级锁<br>useHeavyMonitors 是否只使用重量级锁，对应JVM参数-XX:-UseHeavyMonitors , 默认f</p>
+<p>原子比较交换操作的含义是，如果地址上的值与期望的旧值相等，则将新值写入该地址，并返回原来的值。如果地址上的值与期望的旧值不相等，则不进行任何操作，直接返回地址上的当前值。</p>
+<h4 id="线程状态："><a href="#线程状态：" class="headerlink" title="线程状态："></a>线程状态：</h4><p>os层面，线程有5种状态：<br>初始状态：new了没start，线程存在于语言层面，没有与某个操作系统线程关联。所以严格说操作系统层面的线程是没有这个状态。<br>可运行状态&#x2F;就绪状态：start了没被分到时间片<br>运行状态：获取了CPU时间片执行程序<br>阻塞状态：调用了阻塞API如BIO，在os层面调用了阻塞式的系统调用，如等待键盘输入的系统调用。CPU不考虑调度它<br>终止状态：生命周期结束</p>
+<p>Java API层面，线程有六种状态：<br>NEW<br>RUNNABLE：包括上面的可运行状态、运行状态、阻塞状态<br>BLOCKED：堵在monitor的entryList<br>WAITING：等在monitor的waitSet且是无时限wait，park，无参join<br>TIMED WAITING：sleep，有时限的wait，有时限的join，parkNanos,parkUntil<br>TERMINATED</p>
+<p>waitSet的线程被唤醒后会重新进entryList阻塞 排队进入临界区 成为owner，而不是被唤醒就直接成为owner</p>
+<p>wait与notify最佳实践：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 线程1</span></span><br><span class="line"><span class="keyword">synchronized</span>(lock) &#123;</span><br><span class="line">    <span class="keyword">while</span>(条件未满足) &#123;</span><br><span class="line">        lock.wait(time);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 条件满足，执行工作逻辑</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 线程2</span></span><br><span class="line"><span class="keyword">synchronized</span>(lock) &#123;</span><br><span class="line">    <span class="comment">// 做一些使条件满足的工作</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    lock.notifyAll();</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>保护性暂停模式：</strong> 产生结果的线程与使用结果的线程是一一对应的，这点不同于生产者消费者模式。</p>
+<p>park不会释放锁</p>
+<h4 id="volatile关键字"><a href="#volatile关键字" class="headerlink" title="volatile关键字"></a>volatile关键字</h4><p><code>volatile</code>保证可见性，有序性：读写屏障防止指令重排和保证变量变动对所有线程可见，但不保证原子性，多线程间指令交替执行由CPU调度控制，这点无可避免。<br>具体怎么保证的？<br>对<code>volatile</code>变量的写操作加上写屏障，读操作加上读屏障。</p>
+<p>保证可见性：写屏障保证在该屏障前对共享变量的改动都同步到主存，读屏障保证在该屏障后的变量读取都去从主存中加载最新数据。</p>
+<p>保证有序性：写屏障保证写操作之前的代码不会指令重排到写操作之后，读屏障保证读操作之后的代码不会指令重排到读操作之前。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ↓↓↓↓↓↓  读屏障  ↓↓↓↓↓↓↓↓↓</span></span><br><span class="line">read(<span class="keyword">var</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">update(<span class="keyword">var</span>)</span><br><span class="line"><span class="comment">// ↑↑↑↑↑↑  写屏障  ↑↑↑↑↑↑↑↑↑ </span></span><br></pre></td></tr></table></figure>
+
+<p>对比之下，<code>synchronized</code>保证了同步代码块原子性，保护同步代码块只能被多个线程串行执行，尽管owner线程可能被CPU调度暂停执行，但它下次获得时间片继续执行代码前都不会有线程进入同步代码，CPU调度改变不了线程的owner身份。如果共享资源都被<code>synchronized</code>保护，那么<code>synchronized</code>能避免出现共享资源的可见性有序性方面的问题。都串行执行，那么指令重排是不会干扰结果正确性的——不会主动做会造成问题的重排，指令重排酿成问题是因为多线程环境程序并行执行导致。</p>
+<p><code>double-check-locking</code> 双重检测保证第一次并发访问时同步块内某些关键代码不被逃过判断而错误地重复执行，但dcl容易存在问题的原因是 <code>INSTANCE = new Object();</code> 这行代码不是原子的，在字节码层面有两个操作：调用构造函数和给引用赋值，这两个操作可能发生指令重排，出现这样一种情况：线程1执行这行代码，先给引用赋值……然后调用构造方法；线程2在这两个操作之间执行了下面代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (INSTANCE == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="comment">// 同步代码块</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> INSTANCE;</span><br></pre></td></tr></table></figure>
+<p>由于引用赋值了，所以线程2执行返回语句，结果是返回两一个尚未完成构造方法的初始化半截的对象。出现问题。</p>
+<p>倒是也好解决——对 <code>INSTANCE</code> 加 <code>volatile</code> ，防止上面所说的构造与赋值这两个操作指令重排。</p>
+<p>上面是 <code>volatile</code> 的一个应用场景，解决 <code>double-check-locking</code> 的代码重排问题，第二是一写多读的情况（因为不能保证每个线程写操作的原子性，多线程写的并发问题解决不了）</p>
+<p>类加载时，对静态成员变量的赋值操作由jvm保证线程安全性。</p>
+<p>cas的比较并交换，比较需要获取值在主存的最新的结果，因此需要将值属性设为 <code>volatile</code></p>
+<h4 id="使用-unsafe-对象的cas编写原子类"><a href="#使用-unsafe-对象的cas编写原子类" class="headerlink" title="使用 unsafe 对象的cas编写原子类"></a>使用 <code>unsafe</code> 对象的cas编写原子类</h4><ol>
+<li><p>首先需要获取 <code>unsafe</code> 对象， 它是 <code>Unsafe</code> 类的用于单例创建的私有属性，属性名 <code>theUnsafe</code> ，用反射的方式拿到这个对象，如下：</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="type">Field</span> <span class="variable">theUnsafe</span> <span class="operator">=</span> Unsafe.class.getDeclaredField(<span class="string">&quot;theUnsafe&quot;</span>);</span><br><span class="line">    theUnsafe.setAccessible(<span class="literal">true</span>);</span><br><span class="line">    <span class="type">Unsafe</span> <span class="variable">unsafe</span> <span class="operator">=</span> (Unsafe) theUnsafe.get(<span class="literal">null</span>);</span><br><span class="line">&#125; <span class="keyword">catch</span> (IllegalAccessException | NoSuchFieldException e) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(e);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>然后就可以使用这个对象的cas方法，达到原子修改某个对象的某个域的目的。但需要「这个域在所属类的偏移量」这个参数，这个偏移量可以通过 <code>unsafe</code> 对象的 <code>long objectFieldOffset(Field f)</code> 方法获取。</p>
+</li>
+<li><p>如下是自定义的原子整数类的 <code>add()</code> 方法：</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">add</span><span class="params">(<span class="type">int</span> num)</span> &#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">expectedValue</span> <span class="operator">=</span> <span class="built_in">this</span>.value;</span><br><span class="line">        <span class="type">int</span> <span class="variable">newValue</span> <span class="operator">=</span> expectedValue + num;</span><br><span class="line">        <span class="keyword">if</span> (unsafe.compareAndSwapInt(<span class="built_in">this</span>, valueOffset, expectedValue, newValue)) &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p><code>HashMap</code>的<code>size</code>是映射数，<code>capacity</code>是<code>node</code>数组长度，<code>threshold</code>是扩容阈值，是<code>capacity*负载因子loadFactor</code></p>
+<p>装饰器模式能使被装饰对象的某些服务对外不可见，做这样一个限制作用（参考 <code>FinalizableDelegatedExecutorService</code> 装饰 <code>ThreadPoolExecutor</code> ）；当然也有丰富功能的装饰作用。</p>
+<h4 id="基于-AQS-的-ReentrantLock-："><a href="#基于-AQS-的-ReentrantLock-：" class="headerlink" title="基于 AQS 的 ReentrantLock ："></a>基于 AQS 的 ReentrantLock ：</h4><p><code>ReentrantLock</code>中定义了<code>Sync</code>抽象类继承AQS，<code>Sync</code>类在实现功能时大量使用了<code>AQS</code>为我们编写好的实现。<code>Sync</code>有两个子类：<code>FairSync</code>和<code>NonFairSync</code>。在创建ReentrantLock时根据传参情况选择创建公平同步器<code>FairSync</code>还是非公平同步器<code>NonFairSync</code>。</p>
+<p><code>ReentrantLock的lock()</code>方法直接使用了<code>sync</code>成员的<code>lock()</code>方法，实际上<code>Sync的lock()</code>是模板方法，调用了抽象方法<code>initialTryLock()</code>尝试获取一次锁，失败则调用<code>AQS</code>的<code>acquire(1)</code>，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// class Sync</span></span><br><span class="line">    <span class="keyword">abstract</span> <span class="type">boolean</span> <span class="title function_">initialTryLock</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ReservedStackAccess</span></span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">void</span> <span class="title function_">lock</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (!initialTryLock())</span><br><span class="line">            acquire(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>initialTryLock()</code>方法在上述提到的两个子类中各自实现，主要的区别是：<code>NonFairSync</code>会直接让当前线程使用cas去竞争锁；<code>FairSync</code>则更守规矩，只有在判断确定目前锁为空闲<code>（ state == 0 ）</code>且无等待的线程 情形下，才去cas获取锁。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// UnFairSync中nitialTryLock()的实现</span></span><br><span class="line"><span class="keyword">final</span> <span class="type">boolean</span> <span class="title function_">initialTryLock</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">Thread</span> <span class="variable">current</span> <span class="operator">=</span> Thread.currentThread();</span><br><span class="line">    <span class="keyword">if</span> (compareAndSetState(<span class="number">0</span>, <span class="number">1</span>)) &#123; <span class="comment">// first attempt is unguarded</span></span><br><span class="line">        setExclusiveOwnerThread(current);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (getExclusiveOwnerThread() == current) &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> getState() + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (c &lt; <span class="number">0</span>) <span class="comment">// overflow</span></span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&quot;Maximum lock count exceeded&quot;</span>);</span><br><span class="line">        setState(c);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// FairSync中nitialTryLock()实现</span></span><br><span class="line"><span class="keyword">final</span> <span class="type">boolean</span> <span class="title function_">initialTryLock</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">Thread</span> <span class="variable">current</span> <span class="operator">=</span> Thread.currentThread();</span><br><span class="line">    <span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> getState();</span><br><span class="line">    <span class="keyword">if</span> (c == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!hasQueuedThreads() &amp;&amp; compareAndSetState(<span class="number">0</span>, <span class="number">1</span>)) &#123;</span><br><span class="line">            setExclusiveOwnerThread(current);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (getExclusiveOwnerThread() == current) &#123;</span><br><span class="line">        <span class="keyword">if</span> (++c &lt; <span class="number">0</span>) <span class="comment">// overflow</span></span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&quot;Maximum lock count exceeded&quot;</span>);</span><br><span class="line">        setState(c);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>另外，可以看出，上面两个实现都对锁重入情况做了支持，做法是对<code>AQS</code>的<code>state</code>属性做了自增。</p>
+<p><code>tryAcquire()</code>方法同理，<code>FairSync</code>比<code>NonFairSync</code>在尝试获取锁时多了<code>!hasQueuedPredecessors()</code>这一判断条件，保证公平性（FIFO）。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">mizore</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2023/12/01/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">http://example.com/2023/12/01/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">樱与抱月</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/JUC/">JUC</a></div><div class="post_share"><div class="social-share" data-image="/img/profilePicture.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2023/12/01/JVM%E8%87%AA%E5%8A%A8%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" title="JVM自动内存管理"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">JVM自动内存管理</div></div></a></div></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="waline-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/profilePicture.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">mizore</div><div class="author-info__description">Welcome to my blog!!</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">19</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">11</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/GrayAndCyan" target="_blank" title=""><i class="fab fa-github"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#JUC"><span class="toc-number">1.</span> <span class="toc-text">JUC</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E5%BA%A6%E7%BA%BF%E7%A8%8B%EF%BC%8C%E5%8F%91%E7%94%9F%E7%AB%9E%E6%80%81"><span class="toc-number">1.0.1.</span> <span class="toc-text">调度线程，发生竞态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5"><span class="toc-number">1.0.2.</span> <span class="toc-text">线程同步</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#synchronized%E9%94%81"><span class="toc-number">1.0.2.1.</span> <span class="toc-text">synchronized锁</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%EF%BC%9A"><span class="toc-number">1.0.2.2.</span> <span class="toc-text">线程状态：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#volatile%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-number">1.0.2.3.</span> <span class="toc-text">volatile关键字</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-unsafe-%E5%AF%B9%E8%B1%A1%E7%9A%84cas%E7%BC%96%E5%86%99%E5%8E%9F%E5%AD%90%E7%B1%BB"><span class="toc-number">1.0.2.4.</span> <span class="toc-text">使用 unsafe 对象的cas编写原子类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E-AQS-%E7%9A%84-ReentrantLock-%EF%BC%9A"><span class="toc-number">1.0.2.5.</span> <span class="toc-text">基于 AQS 的 ReentrantLock ：</span></a></li></ol></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/12/01/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" title="Java并发编程">Java并发编程</a><time datetime="2023-12-01T01:11:31.000Z" title="发表于 2023-11-30 17:11:31">2023-11-30</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/12/01/JVM%E8%87%AA%E5%8A%A8%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" title="JVM自动内存管理">JVM自动内存管理</a><time datetime="2023-12-01T00:53:08.000Z" title="发表于 2023-11-30 16:53:08">2023-11-30</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/10/Java%E5%90%8E%E7%AB%AF%E9%9D%A2%E7%BB%8F-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%E4%B8%AD/" title="Java后端面经-持续更新中">Java后端面经-持续更新中</a><time datetime="2023-10-09T19:49:45.000Z" title="发表于 2023-10-09 11:49:45">2023-10-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/10/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" title="微服务">微服务</a><time datetime="2023-10-09T19:45:22.000Z" title="发表于 2023-10-09 11:45:22">2023-10-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/10/rabbitmq/" title="RabbitMQ">RabbitMQ</a><time datetime="2023-10-09T19:40:46.000Z" title="发表于 2023-10-09 11:40:46">2023-10-09</time></div></div></div></div></div></div></main><footer id="footer" style="background: rgba(255,255,255,.0)"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By mizore</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><div class="js-pjax"><script>function loadWaline () {
+  function initWaline () {
+    const waline = Waline.init(Object.assign({
+      el: '#waline-wrap',
+      serverURL: 'https://fragileu-blog.vercel.app/',
+      pageview: false,
+      dark: 'html[data-theme="dark"]',
+      path: window.location.pathname,
+      comment: false,
+    }, null))
+  }
+
+  if (typeof Waline === 'object') initWaline()
+  else {
+    getCSS('https://cdn.jsdelivr.net/npm/@waline/client/dist/waline.min.css').then(() => {
+      getScript('https://cdn.jsdelivr.net/npm/@waline/client/dist/waline.min.js').then(initWaline)
+    })
+  }
+}
+
+if ('Waline' === 'Waline' || !true) {
+  if (true) btf.loadComment(document.getElementById('waline-wrap'),loadWaline)
+  else setTimeout(loadWaline, 0)
+} else {
+  function loadOtherComment () {
+    loadWaline()
+  }
+}</script></div><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="true" data-text="Honoka,You,Ayumu,Sumire,Megumi" data-fontsize="15px" data-random="true" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
